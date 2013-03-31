@@ -33,11 +33,17 @@
 
 
     <bean name="indexController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+          class="com.calltag.controller.IndexController">
           <property name="viewName" value="index" />
     </bean>
-
+    
+<!--    <bean name="twitterListener"
+          class="com.calltag.service.TwitterListener">
+    </bean>-->
+    
+    
     <tx:annotation-driven />
+    
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
         <property name="dataSource" ref="dataSource"/>
