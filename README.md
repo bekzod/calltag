@@ -12,7 +12,7 @@ Simple Web App that utilizes twitter and twillio api.
 
 
 ### Requires
-Requires twitter4j.properties file containing 
+Requires twitter4j.properties file in src/main/resources/twitter4j.properties containing 
 
 	debug=true
 	oauth.consumerKey=*********************
@@ -20,7 +20,7 @@ Requires twitter4j.properties file containing
 	oauth.accessToken=**************************************************
 	oauth.accessTokenSecret=******************************************
 
-	src/main/resources/twitter4j.properties
+
 
 [More info](http://twitter4j.org/en/configuration.html)
 
