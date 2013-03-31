@@ -44,19 +44,11 @@ public class IndexController extends ParameterizableViewController {
 //        twitterListener.track(token, keywords, null);
         
         
-//        Twitter twitter = new TwitterFactory().getInstance();
-//        RequestToken requestToken = twitter.getOAuthRequestToken("/auth");
-        
-        
         OAuthAuthorization auth = new OAuthAuthorization(twitterConf);
         auth.setOAuthAccessToken(null);
-        
-//        System.out.print(auth.get());
-//        auth.getOAuthRequestToken();
         
         ModelAndView  mv = new ModelAndView(getViewName());
         mv.addObject("url", auth.getOAuthRequestToken().getAuthenticationURL());
         return mv;
     }
-    
 }
