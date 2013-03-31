@@ -11,11 +11,13 @@ import twitter4j.TwitterStreamFactory;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
 import twitter4j.auth.AccessToken;
+import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 
 /**
@@ -23,7 +25,6 @@ import twitter4j.conf.ConfigurationContext;
  * @author bek
  */
 public class TwitterListener implements StatusListener {
-    
     
     private TwitterStreamFactory twitterFactory;
     private ArrayList<TwitterStream> streams;

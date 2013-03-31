@@ -37,9 +37,9 @@
           <property name="viewName" value="index" />
     </bean>
     
-<!--    <bean name="twitterListener"
-          class="com.calltag.service.TwitterListener">
-    </bean>-->
+    <bean name="twitterConf"
+          class="twitter4j.conf.PropertyConfiguration">
+    </bean>
     
     
     <tx:annotation-driven />
