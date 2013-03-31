@@ -55,7 +55,7 @@ public class IndexController extends ParameterizableViewController {
 //        auth.getOAuthRequestToken();
         
         ModelAndView  mv = new ModelAndView(getViewName());
-        mv.addObject("url", auth.getOAuthRequestToken("http://banerna.com/auth").getAuthenticationURL());
+        mv.addObject("url", auth.getOAuthRequestToken().getAuthenticationURL());
         return mv;
     }
     
