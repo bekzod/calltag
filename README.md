@@ -1,7 +1,7 @@
 # CallTag 
-Simple Web App that utilizes twitter and twillio api.
+Simple Web App that utilizes Twitter and Twillio Api.
 
-[CallTag](http://calltag.herokuapp.com/index.htm)
+[CallTag Demo](http://calltag.herokuapp.com/index.htm)
 
 ### Members Group 20 
 
@@ -11,7 +11,7 @@ Simple Web App that utilizes twitter and twillio api.
 
 
 
-### Requires
+### Requirement
 Requires twitter4j.properties file in src/main/resources/twitter4j.properties containing 
 
 	debug=true
