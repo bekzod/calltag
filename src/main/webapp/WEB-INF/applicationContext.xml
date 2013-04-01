@@ -13,20 +13,19 @@
 
     <context:annotation-config />
     <context:component-scan base-package="com.calltag" />
-    
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven />
+    <tx:annotation-driven />
 
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
-    </bean>
-    
-    
+    </bean>    
     
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
                 <prop key="index.htm">indexController</prop>
+                <prop key="main.htm">mainController</prop>
             </props>
         </property>
     </bean>
@@ -37,21 +36,50 @@
           <property name="viewName" value="index" />
     </bean>
     
+    
+    <bean name="mainController"
+          class="com.calltag.controller.MainController">
+          <property name="viewName" value="main" />
+    </bean>
+    
+   
+   
+   <!--Twillio Set Up-->
+    <bean name="twillioClient"
+          class="com.twilio.sdk.TwilioRestClient">
+        <constructor-arg type="java.lang.String" value="ACff4df864cf3d47c5a9a14bc8181de426"/>
+        <constructor-arg type="java.lang.String" value="33b7355127de2092a1273647d0f90a34"/>
+    </bean>
+    <bean id="phone" 
+          factory-bean="twillioClient"
+          factory-method="getAccount">
+        <constructor-arg type="java.lang.String" value="AP5788cee95cc14c87b68a6980d3428d2f"/>
+    </bean>
+     
+    
+    
+    <!--Twitter Set Up-->
     <bean name="twitterConf"
-          class="twitter4j.conf.PropertyConfiguration">
-    </bean>
+          class="twitter4j.conf.PropertyConfiguration"/>
     
+    <bean id="listener"
+          class="com.calltag.service.TwitterListener"/>   
+        
     
-    <tx:annotation-driven />
-    
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-
+  
 
     <beans profile="default">
+        
+        <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+            <property name="dataSource" ref="dataSource"/>
+            <property name="hibernateProperties">
+                <props>
+                    <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+                </props>
+            </property>
+        </bean>
+        
+        
         <jdbc:embedded-database id="dataSource"/>        
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
             <property name="dataSource" ref="dataSource"/>
@@ -66,6 +94,8 @@
             </property>
         </bean>
     </beans>
+
+
 
     <beans profile="prod">
         <bean class="java.net.URI" id="dbUrl">

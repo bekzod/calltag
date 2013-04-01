@@ -4,6 +4,7 @@
  */
 package com.calltag.service;
 
+import com.twilio.sdk.TwilioRestClient;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
@@ -19,7 +20,8 @@ import twitter4j.TwitterStream;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
-
+import com.twilio.sdk.TwilioRestClient;
+import com.twilio.sdk.resource.instance.Account;
 /**
  *
  * @author bek
@@ -29,10 +31,12 @@ public class TwitterListener implements StatusListener {
     private TwitterStreamFactory twitterFactory;
     private ArrayList<TwitterStream> streams;
     
+//    @Autowired
+//    private Account phone;
     
     public TwitterListener(){
           streams = new ArrayList<TwitterStream>();
-          twitterFactory = new TwitterStreamFactory();          
+          twitterFactory = new TwitterStreamFactory();
     }
     
     

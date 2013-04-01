@@ -28,27 +28,21 @@ import twitter4j.conf.PropertyConfiguration;
  * @author bek
  */
 public class IndexController extends ParameterizableViewController {
-//    @Autowired
-    private TwitterListener twitterListener;
-    
     @Autowired
-    private Configuration twitterConf;
-            
-            
+    private TwitterListener listener;
+                
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-//        twitterListener = new TwitterListener();
-        
+    protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {        
 //        String[] keywords = {"Easter"};
 //        AccessToken token = new AccessToken("39681000-snjnMp3uqhVVZBikcjt51XrCWQpYHGe1uOYtS1qDc","ERBsTFTKgoqQ9mbBLZRYY5BcU8OBMFoZrk8YiqU9ooQ");
 //        twitterListener.track(token, keywords, null);
         
         
-        OAuthAuthorization auth = new OAuthAuthorization(twitterConf);
-        auth.setOAuthAccessToken(null);
+//        OAuthAuthorization auth = new OAuthAuthorization(twitterConf);
+//        auth.setOAuthAccessToken(null);
         
         ModelAndView  mv = new ModelAndView(getViewName());
-        mv.addObject("url", auth.getOAuthRequestToken().getAuthenticationURL());
+        mv.addObject("url", req.getSession().getId());
         return mv;
     }
 }
