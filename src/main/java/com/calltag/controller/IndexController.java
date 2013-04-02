@@ -46,13 +46,13 @@ public class IndexController extends ParameterizableViewController {
         
 //        OAuthAuthorization auth = new OAuthAuthorization(twitterConf);
 //        auth.setOAuthAccessToken(null);
-//        
-        try {
-            phone.call("447414651686","http://calltag.heroku.com/twillio.htm?tweetid=318124365143224320");
-        } catch (TwilioRestException ex) {
-            Logger.getLogger(TwitterListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//        
+////        
+//        try {
+//            phone.call("447414651686","http://calltag.heroku.com/twillio.htm?tweetid=318124365143224320");
+//        } catch (TwilioRestException ex) {
+//            Logger.getLogger(TwitterListener.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+////        
         ModelAndView  mv = new ModelAndView(getViewName());
         mv.addObject("url", req.getSession().getId());
         return mv;
