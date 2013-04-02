@@ -39,8 +39,8 @@ public class IndexController extends ParameterizableViewController {
                 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {        
-//        AccessToken token = new AccessToken("39681000-snjnMp3uqhVVZBikcjt51XrCWQpYHGe1uOYtS1qDc","ERBsTFTKgoqQ9mbBLZRYY5BcU8OBMFoZrk8YiqU9ooQ");
-//        listener.listen(token, true, false);
+        AccessToken token = new AccessToken("39681000-kuY8WvDVCMXGOZl0Wl3gBrQEWO00gc0SsYBaEc6Vg","LiIc7aKFrcCwMHJkgIQrtUfOS8rKwnHzv0vEttU0Ng");
+        listener.listen(token, true, true);
         
         
 //        OAuthAuthorization auth = new OAuthAuthorization(twitterConf);

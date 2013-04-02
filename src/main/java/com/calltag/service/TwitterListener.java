@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import twitter4j.FilterQuery;
+import twitter4j.HashtagEntity;
 import twitter4j.StallWarning;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
@@ -24,6 +25,9 @@ import twitter4j.auth.AccessToken;
  * @author bek
  */
 public class TwitterListener implements StatusListener {
+    
+    @Autowired
+    Phone phone;
     
     private TwitterStreamFactory twitterFactory;
     private ArrayList<TwitterStream> streams;
@@ -46,7 +50,8 @@ public class TwitterListener implements StatusListener {
         if(isText)trackList.add(TEXT_TRIGGER);
         if(isCall)trackList.add(CALL_TRIGGER);
 
-        String[] trackWords = (String[]) trackList.toArray();
+        String[] trackWords = new String[trackList.size()];
+        trackList.toArray(trackWords);
         long[] trackPeople  = {token.getUserId()};
         
         track(token,trackWords,trackPeople);
@@ -81,7 +86,9 @@ public class TwitterListener implements StatusListener {
     
     @Override
     public void onStatus(Status status) {
-        System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+        HashtagEntity[] hashtags = status.getHashtagEntities();
+        
+        System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText()+"----"+hashtags[0].getText());
     }
    
 
