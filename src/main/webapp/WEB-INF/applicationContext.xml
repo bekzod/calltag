@@ -26,6 +26,7 @@
             <props>
                 <prop key="index.htm">indexController</prop>
                 <prop key="main.htm">mainController</prop>
+                <prop key="twillio.htm">twillioController</prop>
             </props>
         </property>
     </bean>
@@ -42,22 +43,22 @@
           <property name="viewName" value="main" />
     </bean>
     
+      <bean name="twillioController"
+          class="com.calltag.controller.TwillioController">
+          <property name="viewName" value="twillio" />
+    </bean>
+
+    
    
    
    <!--Twillio Set Up-->
-    <bean name="twillioClient"
-          class="com.twilio.sdk.TwilioRestClient">
+    <bean name="phone"
+          class="com.calltag.service.Phone">
         <constructor-arg type="java.lang.String" value="ACff4df864cf3d47c5a9a14bc8181de426"/>
         <constructor-arg type="java.lang.String" value="33b7355127de2092a1273647d0f90a34"/>
-    </bean>
-    <bean id="phone" 
-          factory-bean="twillioClient"
-          factory-method="getAccount">
-        <constructor-arg type="java.lang.String" value="AP5788cee95cc14c87b68a6980d3428d2f"/>
-    </bean>
-     
-    
-    
+        <constructor-arg type="java.lang.String" value="442003331641"/>
+    </bean><!--
+         -->
     <!--Twitter Set Up-->
     <bean name="twitterConf"
           class="twitter4j.conf.PropertyConfiguration"/>

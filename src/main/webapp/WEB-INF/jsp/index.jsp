@@ -18,8 +18,6 @@
     <h2>Calltag</h2>  
     <p><%= ((String)request.getAttribute("url"))%></p>
 
-<!-- end tab content -->
-</div>
 
 
 <script src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>

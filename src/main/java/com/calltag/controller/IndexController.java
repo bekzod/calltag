@@ -4,8 +4,12 @@
  */
 package com.calltag.controller;
 
+import com.calltag.service.Phone;
 import com.calltag.service.TwitterListener;
+import com.twilio.sdk.TwilioRestException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +26,6 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
-
 /**
  *
  * @author bek
@@ -30,6 +33,9 @@ import twitter4j.conf.PropertyConfiguration;
 public class IndexController extends ParameterizableViewController {
     @Autowired
     private TwitterListener listener;
+    @Autowired
+    private Phone phone;
+
                 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {        
@@ -40,7 +46,13 @@ public class IndexController extends ParameterizableViewController {
         
 //        OAuthAuthorization auth = new OAuthAuthorization(twitterConf);
 //        auth.setOAuthAccessToken(null);
-        
+//        
+        try {
+            phone.call("447414651686","http://calltag.heroku.com/twillio.html?tweetid=112652479837110270");
+        } catch (TwilioRestException ex) {
+            Logger.getLogger(TwitterListener.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        
         ModelAndView  mv = new ModelAndView(getViewName());
         mv.addObject("url", req.getSession().getId());
         return mv;
