@@ -39,7 +39,7 @@ public class TwitterListener implements StatusListener {
     }
     
     
-    public void listen(AccessToken token,Boolean isCall,Boolean isText){
+    public void listen(AccessToken token,boolean isCall,boolean isText){
         if(!isText&&!isCall)return; // when no call or no text end here
         
         ArrayList<String> trackList = new ArrayList<String>();

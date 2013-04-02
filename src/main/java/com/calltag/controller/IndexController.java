@@ -39,9 +39,8 @@ public class IndexController extends ParameterizableViewController {
                 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {        
-//        String[] keywords = {"Easter"};
 //        AccessToken token = new AccessToken("39681000-snjnMp3uqhVVZBikcjt51XrCWQpYHGe1uOYtS1qDc","ERBsTFTKgoqQ9mbBLZRYY5BcU8OBMFoZrk8YiqU9ooQ");
-//        twitterListener.track(token, keywords, null);
+//        listener.listen(token, true, false);
         
         
 //        OAuthAuthorization auth = new OAuthAuthorization(twitterConf);
