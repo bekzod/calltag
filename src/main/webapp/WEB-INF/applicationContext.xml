@@ -51,20 +51,26 @@
     
    
    
-   <!--Twillio Set Up-->
+   <!-- Twillio Set Up -->
     <bean name="phone"
           class="com.calltag.service.Phone">
         <constructor-arg type="java.lang.String" value="ACff4df864cf3d47c5a9a14bc8181de426"/>
         <constructor-arg type="java.lang.String" value="33b7355127de2092a1273647d0f90a34"/>
         <constructor-arg type="java.lang.String" value="442003331641"/>
-    </bean><!--
-         -->
-    <!--Twitter Set Up-->
+    </bean>
+    
+         
+         
+         
+    <!-- Twitter Set Up -->
     <bean name="twitterConf"
           class="twitter4j.conf.PropertyConfiguration"/>
-    
     <bean id="listener"
-          class="com.calltag.service.TwitterListener"/>   
+          class="com.calltag.service.TwitterListener"/>
+    <bean name="twitterFactory"
+          class="twitter4j.TwitterFactory">
+          <constructor-arg type="twitter4j.conf.Configuration" ref="twitterConf"/>
+    </bean>
         
     
   
@@ -99,15 +105,21 @@
 
 
     <beans profile="prod">
+       
+
         <bean class="java.net.URI" id="dbUrl">
             <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
         </bean>
 
+        
+        
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
             <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
             <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
             <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
         </bean>
+        
+        
         
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
             <property name="dataSource" ref="dataSource"/>
@@ -123,6 +135,9 @@
                 </props>
             </property>
         </bean>
+        
+        
+        
     </beans>
 
 </beans>
