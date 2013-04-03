@@ -68,9 +68,8 @@ public class TwitterListener implements UserStreamListener {
     
     private void track(AccessToken token,String[] trackWords){
         TwitterStream oldStream = removeSreamWithUserId(token.getUserId()); // removing twitter stream if already  exist
-        if(oldStream!=null){
-            //destroying old stream
-            oldStream.shutdown();
+        if(oldStream != null){
+            oldStream.shutdown();//destroying old stream
             oldStream.cleanUp();
             oldStream = null;
         }
@@ -99,23 +98,26 @@ public class TwitterListener implements UserStreamListener {
         
     @Override
     public void onStatus(Status status) {
-        System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
-        
+       System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
        handleTweet(status);
     }
     
     
     private void handleTweet(Status status){
         
+        // text of the tweet
         String text = status.getText();
         
+        //checking if tweet has $call or $text tag
         boolean shouldCall = text.indexOf("$call") > -1;
         if (shouldCall)text = text.replaceFirst("\\$call","");
         boolean shouldText = text.indexOf("$text") > -1;
         if (shouldText)text = text.replaceFirst("\\$text","");
+
+        // if we have no call no text then ending here
+        if(!shouldCall&&!shouldText)return;
         
-        if(!shouldCall&&!shouldText)return;// if we have no call no text then ending here
-        
+        //extracting unique phone numbers in the tweet which will recieve call or text
         Set<String> phones = new HashSet<String>();
         Matcher m = Pattern.compile("(\\+\\d{12})").matcher(text);
         while (m.find()) {
@@ -124,8 +126,10 @@ public class TwitterListener implements UserStreamListener {
                 phones.add(phone);
             }
         }
+        //removing or valid phone numbers from tweet
         text = m.replaceAll("");
         
+        //itirating and making phone call or text to each phone in the tweet
         Iterator<String> iterator = phones.iterator();
         while(iterator.hasNext()){
             String phoneNumber = iterator.next();
@@ -139,22 +143,18 @@ public class TwitterListener implements UserStreamListener {
     
     
     private void makeCall(String phoneNumber,long id,User user){
-        String endPoint = "calltag.heroku.com/twillio.htm?tweetid="+(String.valueOf(id));
-               endPoint +="&"+"authorid="+user.getId();
-        try {
-            phone.call(phoneNumber,endPoint);
-        } catch (TwilioRestException ex) {
-            Logger.getLogger(TwitterListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //creating endpoint for twillio which will be 
+        //twillio server called when phone is picked up
+        String endPoint = "calltag.heroku.com/twillio.htm";
+               endPoint+= "?tweetid="+(String.valueOf(id));
+               endPoint+= "&authorid="+user.getId();
+               
+        phone.call(phoneNumber,endPoint);
     }
     
      
     private void makeText(String phoneNumber,String text){
-        try {
-            phone.text(phoneNumber, text);
-        } catch (TwilioRestException ex) {
-            Logger.getLogger(TwitterListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        phone.text(phoneNumber, text);
     }
     
     
