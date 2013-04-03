@@ -3,6 +3,9 @@ Simple Web App that utilizes Twitter and Twillio Api.
 
 [CallTag Demo](http://calltag.herokuapp.com/index.htm)
 
+App allows to make phone calls and send text message through tweet, by tweeting with special tag *$call* or *$text* with the target phone numbers.
+
+
 ### Members Group 20 
 
 * Bekhzod Khaitbaev
