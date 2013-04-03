@@ -7,9 +7,14 @@ package com.calltag.controller;
 import com.calltag.service.Phone;
 import com.calltag.service.TwitterListener;
 import com.twilio.sdk.TwilioRestException;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +56,12 @@ public class IndexController extends ParameterizableViewController {
 //        } catch (TwilioRestException ex) {
 //            Logger.getLogger(TwitterListener.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-////        
+////    
+           
+       
+        
         ModelAndView  mv = new ModelAndView(getViewName());
-        mv.addObject("url", req.getSession().getId());
+        mv.addObject("url","");
         return mv;
     }
 }

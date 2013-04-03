@@ -4,6 +4,10 @@
  */
 package com.calltag.controller;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +38,30 @@ public class TwillioController extends ParameterizableViewController {
         AccessToken token = new AccessToken("39681000-kuY8WvDVCMXGOZl0Wl3gBrQEWO00gc0SsYBaEc6Vg","LiIc7aKFrcCwMHJkgIQrtUfOS8rKwnHzv0vEttU0Ng");
         Twitter twitter   = twitterFactory.getInstance(token);
         
-        String say;
+        String text;
         
         try {
             Status status = twitter.showStatus(Long.parseLong(tweetid));
-            say = status.getText();
+            text = status.getText();
         } catch (TwitterException e) {
-            say = e.toString();
+            text = e.toString();
         }
         
+        
+        Set<String> phones = new HashSet<String>();
+        Matcher m = Pattern.compile("(\\+\\d{12})").matcher(text);
+        while (m.find()) {
+            String phone = m.group();
+            if (!phones.contains(phone)) {
+                phones.add(phone);
+            }
+        }
+        text = m.replaceAll("");
+        text.replaceFirst("\\$call", "");
+        text.replaceFirst("\\$text", "");
+        
         ModelAndView  mv = new ModelAndView(getViewName());
-        mv.addObject("say",say);
+        mv.addObject("say",text);
         return mv;
     }
     
