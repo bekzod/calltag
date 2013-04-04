@@ -49,6 +49,9 @@ public class UserService implements ApplicationEventPublisherAware   {
     public List<User> getUsers() {
         return userDao.getUsers();
     }
-
+    
+    public User getUserBySession(String sessionId) {
+        return userDao.getUserBySession(sessionId);
+    }
  
 }

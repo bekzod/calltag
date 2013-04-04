@@ -51,12 +51,14 @@ public class UserDao {
     }
     
     
-//    public User getUser(long id) {
-//        return (User) getCurrentSession()
-//                .createSQLQuery("from User where id=?")
-//                .setParameter(0, id)
-//                .list().get(0);
-//    }
+    public User getUserBySession(String sessionId) {
+        long now = System.currentTimeMillis()/1000;
+        return (User) getCurrentSession()
+                .createSQLQuery("from User where session_id=? and session_expiry_date<?")// checking if session expired
+                .setParameter(0, sessionId)
+                .setParameter(1, now)
+                .list().get(0);
+    }
 
    
     
