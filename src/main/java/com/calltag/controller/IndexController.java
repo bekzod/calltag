@@ -4,49 +4,24 @@
  */
 package com.calltag.controller;
 
-import com.calltag.service.Phone;
-import com.calltag.service.TwitterListener;
-import com.twilio.sdk.TwilioRestException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.calltag.model.User;
+import com.calltag.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.Authorization;
-import twitter4j.auth.AuthorizationFactory;
-import twitter4j.auth.OAuthAuthorization;
-import twitter4j.auth.RequestToken;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.conf.ConfigurationContext;
-import twitter4j.conf.PropertyConfiguration;
+
 /**
  *
  * @author bek
  */
 public class IndexController extends ParameterizableViewController {
     @Autowired
-    private TwitterListener listener;
-    @Autowired
-    private Phone phone;
-
-                
+    private UserService service;
+    
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {        
-        AccessToken token = new AccessToken("39681000-kuY8WvDVCMXGOZl0Wl3gBrQEWO00gc0SsYBaEc6Vg","LiIc7aKFrcCwMHJkgIQrtUfOS8rKwnHzv0vEttU0Ng");
-        listener.listen(token, true, true);
-        
+    protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {
         
 //        OAuthAuthorization auth = new OAuthAuthorization(twitterConf);
 //        auth.setOAuthAccessToken(null);
@@ -57,11 +32,11 @@ public class IndexController extends ParameterizableViewController {
 //            Logger.getLogger(TwitterListener.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 ////    
-           
-       
+
+//        req.getSession().getMaxInactiveInterval();
         
         ModelAndView  mv = new ModelAndView(getViewName());
-        mv.addObject("url","");
+        mv.addObject("url",req.getSession().getId());
         return mv;
     }
 }

@@ -4,18 +4,17 @@
  */
 package com.calltag.service;
 
-import com.twilio.sdk.TwilioRestException;
-import com.twilio.sdk.resource.instance.Account;
+import com.calltag.event.UserEvent;
+import com.calltag.event.UserEventListener;
+import com.calltag.model.User;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
 import twitter4j.TwitterStreamFactory;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,101 +22,95 @@ import twitter4j.DirectMessage;
 import twitter4j.FilterQuery;
 import twitter4j.HashtagEntity;
 import twitter4j.StallWarning;
+import twitter4j.StatusStream;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
-import twitter4j.User;
-import twitter4j.UserList;
 import twitter4j.UserStreamListener;
 import twitter4j.auth.AccessToken;
 /**
  *
  * @author bek
  */
-public class TwitterListener implements UserStreamListener {
+public class TwitterListener extends UserEventListener implements StatusListener {
     
     @Autowired
-    Phone phone;
+    private Phone phone;
     
+    @Autowired
+    private UserService userService;
+        
     private TwitterStreamFactory twitterFactory;
-    private ArrayList<TwitterStream> streams;
+    private TwitterStream stream;
     
     public static final String CALL_TRIGGER = "$call";
     public static final String TEXT_TRIGGER = "$text";
-        
 
-    
     public TwitterListener(){
-        streams        = new ArrayList<TwitterStream>();
         twitterFactory = new TwitterStreamFactory();
     }
     
-    public void listen(AccessToken token,boolean isCall,boolean isText){
-        if(!isText&&!isCall)return; // when no call or no text end here
+    
+    // stream must be refreshed every time when users change as 
+    //we have one stream listining for all users
+    @Override 
+    protected void onUserEvent(String eventName,User user){
+        if(eventName == UserEvent.USER_ADDED || eventName == UserEvent.USER_REMOVED)refreshStream();
+    }
+    
+    
+    private void refreshStream(){
+        String[] trackWords = {TEXT_TRIGGER,CALL_TRIGGER};
+        List<User> userList = userService.getUsers();
+        long[] ids = new long[userList.size()];
         
-        ArrayList<String> trackList = new ArrayList<String>();
-        if(isText)trackList.add(TEXT_TRIGGER);
-        if(isCall)trackList.add(CALL_TRIGGER);
+        for(int i = 0;i<ids.length;i++){
+            ids[i] = userList.get(i).getId();
+        }
+        
+        FilterQuery query = new FilterQuery();
+        query.follow(ids);
+        query.track(trackWords);
+        
+        AccessToken token = new AccessToken("39681000-kuY8WvDVCMXGOZl0Wl3gBrQEWO00gc0SsYBaEc6Vg", "LiIc7aKFrcCwMHJkgIQrtUfOS8rKwnHzv0vEttU0Ng");
 
-        String[] trackWords = new String[trackList.size()];
-        trackList.toArray(trackWords);
-        long[] trackPeople  = {token.getUserId()};
+        TwitterStream newStream = twitterFactory.getInstance(token);
+        newStream.addListener(this);
+        newStream.filter(query);
         
-        track(token,trackWords);
-    }
-    
-    
-    private void track(AccessToken token,String[] trackWords){
-        TwitterStream oldStream = removeSreamWithUserId(token.getUserId()); // removing twitter stream if already  exist
-        if(oldStream != null){
-            oldStream.shutdown();//destroying old stream
-            oldStream.cleanUp();
-            oldStream = null;
+        if(stream != null){
+            stream.shutdown();
+            stream.cleanUp();
+            stream = null;
         }
         
-        TwitterStream stream = twitterFactory.getInstance(token);
-        stream.addListener(this);
-        stream.user(trackWords);
-        streams.add(stream);
+        stream = newStream;
     }
-    
-    
-    public TwitterStream removeSreamWithUserId(long id){
-        int len = streams.size();
-        for(int i = 0; i<len;i++){
-            try {
-                if(streams.get(i).getOAuthAccessToken().getUserId() == id){
-                    return streams.remove(i);
-                }
-            } catch (TwitterException ex) {
-                Logger.getLogger(TwitterListener.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return null;
-    }
-    
+        
         
     @Override
     public void onStatus(Status status) {
        System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
-       handleTweet(status);
+       User user = userService.getUserById(status.getId());
+       if(user != null)handleTweet(user,status);
     }
     
     
-    private void handleTweet(Status status){
+    private void handleTweet(User user,Status status){
+        //text and calling 
+        if(!user.getIsCallEnabled() && !user.getIsTextEnabled())return;
         
         // text of the tweet
         String text = status.getText();
-        
-        //checking if tweet has $call or $text tag
-        boolean shouldCall = text.indexOf("$call") > -1;
-        if (shouldCall)text = text.replaceFirst("\\$call","");
-        boolean shouldText = text.indexOf("$text") > -1;
-        if (shouldText)text = text.replaceFirst("\\$text","");
 
-        // if we have no call no text then ending here
-        if(!shouldCall&&!shouldText)return;
+        //checking if tweet has CALL_TRIGGER or TEXT_TRIGGER tag
+        boolean shouldCall = text.indexOf(CALL_TRIGGER) > -1 && user.getIsCallEnabled();
+        if (shouldCall)text = text.replaceFirst(CALL_TRIGGER,"");
+        boolean shouldText = text.indexOf(TEXT_TRIGGER) > -1 && user.getIsTextEnabled();
+        if (shouldText)text = text.replaceFirst(TEXT_TRIGGER,"");
         
-        //extracting unique phone numbers in the tweet which will recieve call or text
+        if(!shouldCall && !shouldText)return;// no texting no calling
+        
+        //extracting unique valid phone numbers in the tweet which will recieve call or text
         Set<String> phones = new HashSet<String>();
         Matcher m = Pattern.compile("(\\+\\d{12})").matcher(text);
         while (m.find()) {
@@ -126,15 +119,14 @@ public class TwitterListener implements UserStreamListener {
                 phones.add(phone);
             }
         }
-        //removing or valid phone numbers from tweet
-        text = m.replaceAll("");
+        text = m.replaceAll("");//removing valid phone numbers from tweet
         
         //itirating and making phone call or text to each phone in the tweet
         Iterator<String> iterator = phones.iterator();
         while(iterator.hasNext()){
             String phoneNumber = iterator.next();
             if(shouldCall){
-               makeCall(phoneNumber,status.getId(),status.getUser());
+               makeCall(phoneNumber,status.getId(),status.getUser().getId());
             }else if(shouldText){
                makeText(phoneNumber,text);
             }
@@ -142,12 +134,12 @@ public class TwitterListener implements UserStreamListener {
     }
     
     
-    private void makeCall(String phoneNumber,long id,User user){
+    private void makeCall(String phoneNumber,long id,long userid){
         //creating endpoint for twillio which will be 
         //twillio server called when phone is picked up
         String endPoint = "calltag.heroku.com/twillio.htm";
-               endPoint+= "?tweetid="+(String.valueOf(id));
-               endPoint+= "&authorid="+user.getId();
+               endPoint+= "?tweetid="+id;
+               endPoint+= "&authorid="+userid;
                
         phone.call(phoneNumber,endPoint);
     }
@@ -156,6 +148,8 @@ public class TwitterListener implements UserStreamListener {
     private void makeText(String phoneNumber,String text){
         phone.text(phoneNumber, text);
     }
+        
+   
     
     
     @Override
@@ -166,86 +160,6 @@ public class TwitterListener implements UserStreamListener {
     @Override
     public void onScrubGeo(long l, long l1) {
        
-    }
-
-    @Override
-    public void onDeletionNotice(long l, long l1) {
-
-    }
-
-    @Override
-    public void onFriendList(long[] longs) {
-
-    }
-
-    @Override
-    public void onFavorite(User user, User user1, Status status) {
-
-    }
-
-    @Override
-    public void onUnfavorite(User user, User user1, Status status) {
-
-    }
-
-    @Override
-    public void onFollow(User user, User user1) {
-
-    }
-
-    @Override
-    public void onDirectMessage(DirectMessage dm) {
-
-    }
-
-    @Override
-    public void onUserListMemberAddition(User user, User user1, UserList ul) {
-
-    }
-
-    @Override
-    public void onUserListMemberDeletion(User user, User user1, UserList ul) {
-
-    }
-
-    @Override
-    public void onUserListSubscription(User user, User user1, UserList ul) {
-
-    }
-
-    @Override
-    public void onUserListUnsubscription(User user, User user1, UserList ul) {
-
-    }
-
-    @Override
-    public void onUserListCreation(User user, UserList ul) {
-
-    }
-
-    @Override
-    public void onUserListUpdate(User user, UserList ul) {
-
-    }
-
-    @Override
-    public void onUserListDeletion(User user, UserList ul) {
-
-    }
-
-    @Override
-    public void onUserProfileUpdate(User user) {
-
-    }
-
-    @Override
-    public void onBlock(User user, User user1) {
-
-    }
-
-    @Override
-    public void onUnblock(User user, User user1) {
-
     }
 
     @Override
