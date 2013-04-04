@@ -1,77 +1,86 @@
 package com.calltag.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
-public class User {
-
+@Table(name="user")
+public class User implements Serializable {
+    
     @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Integer id;
-
-    @Column(name = "user_firstname")
-    private String firstname;
-
-    @Column(name = "user_lastname")
-    private String lastname;
-
-    @Column(name = "user_sex")
-    private String sex;
-
-    @Column(name = "user_birthdate")
-    private Date birthDate;
-
-    @Column(name = "user_email")
-    private String email;
-
-    public Integer getId() {
+    private long id;
+    private String name;
+    private String accessToken;
+    private String accessTokenSecret;
+    private String sessionId;
+    private long sessionExpiryDate;
+    private boolean isCallEnabled;
+    private boolean isTextEnabled;    
+                    
+    public long getId() {
         return id;
     }
-
-    public void setId(Integer id) {
+    
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setIsTextEnabled(boolean bool){
+        isTextEnabled = bool;
+    }
+    
+    public boolean getIsTextEnabled(){
+        return isTextEnabled;
+    }
+    
+    public void setIsCallEnabled(boolean bool){
+        isCallEnabled = bool;
+    }
+    
+    public boolean getIsCallEnabled(){
+        return isCallEnabled;
+    }
+    
+    public void setAccessToken(String token) {
+        accessToken = token;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public String getAccessToken() {
+        return accessToken;
     }
-
-    public String getLastname() {
-        return lastname;
+    
+     public void setAccessTokenSecret(String token){
+        accessTokenSecret = token;
     }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    
+    public String getAccessTokenSecret(){
+        return accessTokenSecret;
     }
-
-    public String getSex() {
-        return sex;
+    
+    public String getSessionId(){
+        return sessionId;
     }
-
-    public void setSex(String sex) {
-        this.sex = sex;
+    
+    public void setSessionId(String id){
+        sessionId = id;
     }
-
-    public Date getBirthDate() {
-        return birthDate;
+    
+    public long getSessionExpiryDate(){
+        return sessionExpiryDate;
     }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    
+    public void setSessionExpiryDate(long date){
+          sessionExpiryDate = date;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    
+    
 }

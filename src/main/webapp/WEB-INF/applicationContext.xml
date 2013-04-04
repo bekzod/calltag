@@ -13,8 +13,6 @@
 
     <context:annotation-config />
     <context:component-scan base-package="com.calltag" />
-    <mvc:annotation-driven />
-    <tx:annotation-driven />
 
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
@@ -47,11 +45,14 @@
           class="com.calltag.controller.TwillioController">
           <property name="viewName" value="twillio" />
     </bean>
+    
+    
+    <!-- App Event Publisher-->
+    <!--<bean name="epublisher" class="org.springframework.context.event."/>-->
 
     
    
-   
-   <!-- Twillio Set Up -->
+   <!-- Twillio SetUp -->
     <bean name="phone"
           class="com.calltag.service.Phone">
         <constructor-arg type="java.lang.String" value="ACff4df864cf3d47c5a9a14bc8181de426"/>
@@ -59,10 +60,8 @@
         <constructor-arg type="java.lang.String" value="442003331641"/>
     </bean>
     
-         
-         
-         
-    <!-- Twitter Set Up -->
+                  
+    <!-- Twitter SetUp -->
     <bean name="twitterConf"
           class="twitter4j.conf.PropertyConfiguration"/>
     <bean id="listener"
@@ -71,73 +70,54 @@
           class="twitter4j.TwitterFactory">
           <constructor-arg type="twitter4j.conf.Configuration" ref="twitterConf"/>
     </bean>
-        
     
-  
+    
+     <!--User--> 
+    <bean id="userService" class="com.calltag.service.UserService"/>
+    <bean id="userDao" class="com.calltag.model.UserDao" />
+ 
+        
+<!--     Heroku Config 
+    <bean class="java.net.URI" id="dbUrl">
+        <constructor-arg value="#{systemEnvironment['CLEARDB_DATABASE_URL']}"/>
+    </bean>    -->
+    
+    <!-- Local Database Config -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:database.properties"/>
+    </bean>
+    
+        
+    <!-- Database SetUp -->
+    <bean id="dataSource" 
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+    
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:User.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+ 
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
-    <beans profile="default">
-        
-        <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-            <property name="dataSource" ref="dataSource"/>
-            <property name="hibernateProperties">
-                <props>
-                    <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
-                </props>
-            </property>
-        </bean>
-        
-        
-        <jdbc:embedded-database id="dataSource"/>        
-        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-            <property name="dataSource" ref="dataSource"/>
-            <property name="jpaVendorAdapter">
-                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
-            </property>
-            <property name="jpaProperties">
-                <props>
-                    <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
-                    <prop key="hibernate.hbm2ddl.auto">create</prop>
-                </props>
-            </property>
-        </bean>
-    </beans>
-
-
-
-    <beans profile="prod">
-       
-
-        <bean class="java.net.URI" id="dbUrl">
-            <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
-        </bean>
-
-        
-        
-        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-            <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
-            <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
-            <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
-        </bean>
-        
-        
-        
-        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-            <property name="dataSource" ref="dataSource"/>
-            <property name="jpaVendorAdapter">
-                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
-            </property>
-            <property name="jpaProperties">
-                <props>
-                    <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-                    <prop key="hibernate.show_sql">true</prop>
-                    <!-- change this to 'verify' before running as a production app -->
-                    <prop key="hibernate.hbm2ddl.auto">update</prop>
-                </props>
-            </property>
-        </bean>
-        
-        
-        
-    </beans>
-
+    
 </beans>
