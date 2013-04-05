@@ -24,7 +24,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
  
  @Autowired 
  private UserService userService;
-    
+ 
  @Override
  public boolean preHandle(HttpServletRequest req,HttpServletResponse res, Object handler){
      HttpSession session = req.getSession();

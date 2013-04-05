@@ -54,7 +54,7 @@ public class MainController {
             req.getSession().setAttribute(REQUEST_TOKEN,requestToken);
         }
         
-        req.setAttribute("twitter_url",requestToken.getAuthorizationURL());
+        req.setAttribute("twitter_url",requestToken.getAuthenticationURL());
         return "index";
     }
     
@@ -75,8 +75,36 @@ public class MainController {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        req.setAttribute("name",accessToken.getTokenSecret());
+        if(accessToken!=null)return index(req,res);//failed return to index
+        
+        long userId = accessToken.getUserId();            
+        User user   = service.getUserById(userId);
+        if(user != null){
+            user = new User();
+            user.setId(userId);
+            user.setAccessToken(accessToken.getToken());
+            user.setAccessTokenSecret(accessToken.getTokenSecret());
+            user.setName(accessToken.getScreenName());
+            service.addUser(user);
+        }
+        
+        req.setAttribute("user",user);//saving user for session save
         return main(req,res);
+    }
+    
+    
+    //called by twitter when user attempts to login
+    @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
+    public String logout(HttpServletRequest req,HttpServletResponse res) {
+        User user = (User)req.getAttribute("user");
+        if(user !=null){
+            req.setAttribute("user",null);
+            user.setSessionId(null);
+            service.updateUser(user);
+            req.getSession().invalidate();
+        }
+                
+        return "index";
     }
     
     @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
