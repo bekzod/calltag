@@ -51,8 +51,8 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
         HttpSession session = req.getSession(true);
         if(user!=null){
             session.setMaxInactiveInterval(24*60*60);//one day interval
-            long expiry = session.getCreationTime() + session.getMaxInactiveInterval();
-            user.setSessionExpiryDate(expiry);
+//            long expiry = session.getCreationTime()+ session.getMaxInactiveInterval();
+//            user.setSessionExpiryDate();
             user.setSessionId(session.getId());
             userService.updateUser(user);
         }
