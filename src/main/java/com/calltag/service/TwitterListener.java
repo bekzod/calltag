@@ -4,8 +4,6 @@
  */
 package com.calltag.service;
 
-import com.calltag.event.UserEvent;
-import com.calltag.event.UserEventListener;
 import com.calltag.model.User;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -31,7 +29,7 @@ import twitter4j.auth.AccessToken;
  *
  * @author bek
  */
-public class TwitterListener extends UserEventListener implements StatusListener {
+public class TwitterListener  implements StatusListener {
     
     @Autowired
     private Phone phone;
@@ -47,14 +45,6 @@ public class TwitterListener extends UserEventListener implements StatusListener
 
     public TwitterListener(){
         twitterFactory = new TwitterStreamFactory();
-    }
-    
-    
-    // stream must be refreshed every time when users change as 
-    //we have one stream listining for all users
-    @Override 
-    protected void onUserEvent(String eventName,User user){
-        if(eventName == UserEvent.USER_ADDED || eventName == UserEvent.USER_REMOVED)refreshStream();
     }
     
     

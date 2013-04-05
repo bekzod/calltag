@@ -4,7 +4,6 @@
  */
 package com.calltag.service;
 
-import com.calltag.event.UserEvent;
 import com.calltag.model.User;
 import com.calltag.model.UserDao;
 import java.util.List;
