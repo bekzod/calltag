@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -21,7 +21,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @author bek
  */
 public class SessionInterceptor extends HandlerInterceptorAdapter{
- 
  @Autowired 
  private UserService userService;
  
@@ -31,7 +30,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
      if(!session.isNew()){
         User user = userService.getUserBySession(session.getId());
         long expiry = session.getCreationTime() + session.getMaxInactiveInterval();
-        if(user!=null && user.getSessionExpiryDate() == expiry ){
+        if(user!=null){
            req.setAttribute("user", user);
         }
      }

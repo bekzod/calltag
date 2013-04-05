@@ -24,10 +24,24 @@
     
         
     <!-- Session Management -->
+<!--    <bean name="sessionInterceptor" class="com.calltag.auth.SessionInterceptor" />
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors" ref="sessionInterceptor" />
+    </bean>
+    
+    <mvc:interceptor>
+        <mvc:mapping path="/fx"/>
+        ...
+    </mvc:interceptor>-->
+    
     <mvc:interceptors>
         <bean class="com.calltag.auth.SessionInterceptor" />
-    </mvc:interceptors>    
-        
+<!--        <mvc:interceptor>
+            <mapping path="/fx"/>
+            <bean class="com.fxiapi.auth.LoginInterceptor" />
+        </mvc:interceptor>-->
+    </mvc:interceptors>
+
     
    
    <!-- Twillio SetUp -->
