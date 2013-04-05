@@ -40,6 +40,7 @@ public class MainController {
         //check if user logged in if so he will be redirected to main page
         //else user not logged go to index page;
         if(req.getAttribute("user") != null)return main(req,res);
+        
         RequestToken requestToken = null;
         try {
             mainTwitter.setOAuthAccessToken(null);
@@ -61,6 +62,8 @@ public class MainController {
     //called by twitter when user attempts to login
     @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
     public String login(HttpServletRequest req,HttpServletResponse res) {
+        if(req.getAttribute("user")==null) return main(req,res);//already loged go to main
+
         String oauthToken    = req.getParameter("oauth_token");
         String oauthVerifier = req.getParameter("oauth_verifier");
         
@@ -109,6 +112,7 @@ public class MainController {
     
     @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
     public String main(HttpServletRequest req,HttpServletResponse res) {
+        if(req.getAttribute("user")==null) return index(req,res);
         
         return "main";
     }
