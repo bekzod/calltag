@@ -44,10 +44,11 @@ public class UserDao {
     
     
     public User getUserById(long id){
-        return (User)getCurrentSession()
+    List<User> list = getCurrentSession()
                      .createSQLQuery("select * from user where id=?")
                      .setParameter(0, id)
-                     .list().get(0);
+                     .list();
+        return list.size() > 0 ? list.get(0) : null;
     }
     
     
