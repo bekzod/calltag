@@ -68,7 +68,7 @@ public class MainController {
         AccessToken accessToken   = null;
         RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
         
-        if(requestToken == null) return index(req,res);//couldn't retrieve requestToken go to index
+        if(requestToken == null||oauthToken==null||oauthVerifier==null) return index(req,res);//couldn't retrieve requestToken go to index
         
         try {
            accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
@@ -80,6 +80,7 @@ public class MainController {
         
         long userId = accessToken.getUserId();            
         User user   = service.getUserById(userId);
+        
         if(user == null){
             user = new User();
             user.setId(userId);
