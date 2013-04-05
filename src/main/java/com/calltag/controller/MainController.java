@@ -75,7 +75,7 @@ public class MainController {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if(accessToken!=null)return index(req,res);//failed return to index
+        if(accessToken==null)return index(req,res);//failed return to index
         
         long userId = accessToken.getUserId();            
         User user   = service.getUserById(userId);
