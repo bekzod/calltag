@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <p><%= ((String) request.getAttribute("url"))%></p>
+        <p><%= ((String) request.getAttribute("name"))%></p>
     </body>
 </html>

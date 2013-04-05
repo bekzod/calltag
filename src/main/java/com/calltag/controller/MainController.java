@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
 /**
@@ -25,6 +26,8 @@ import twitter4j.auth.RequestToken;
 
 @Controller
 public class MainController {
+    
+    public static final String REQUEST_TOKEN = "request_token";
     
     @Autowired
     private UserService service;
@@ -45,15 +48,34 @@ public class MainController {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        String authUrl = requestToken!=null?requestToken.getAuthenticationURL():"/index.htm";
-        req.setAttribute("twitter_url",authUrl);
+        String authUrl = "/index.htm";
+        if(requestToken != null){
+            authUrl = requestToken.getAuthenticationURL();
+            req.getSession().setAttribute(REQUEST_TOKEN,requestToken);
+        }
+        
+        req.setAttribute("twitter_url",requestToken);
         return "index";
     }
     
     //called by twitter when user attempts to login
     @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
     public String login(HttpServletRequest req,HttpServletResponse res) {
+        String oauthToken    = req.getParameter("oauth_token");
+        String oauthVerifier = req.getParameter("oauth_verifier");
         
+        AccessToken accessToken = null;
+        RequestToken requestToken = (RequestToken)req.getAttribute(REQUEST_TOKEN);
+        
+        if(requestToken == null) return index(req,res);//couldn't retrieve requestToken go to index
+        
+        try {
+           accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
+        } catch (TwitterException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        req.setAttribute("name",accessToken.getTokenSecret());
         return main(req,res);
     }
     
