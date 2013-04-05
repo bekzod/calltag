@@ -16,16 +16,10 @@ import org.springframework.context.ApplicationEventPublisherAware;
  *
  * @author bek
  */
-public class UserService implements ApplicationEventPublisherAware   {
+public class UserService{
    @Autowired
    private UserDao userDao;
 //   private ApplicationEventPublish er epublisher;
-   
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher pub) {
-//        epublisher = pub;
-    }
-
    
     public void addUser(User user) {
         userDao.addUser(user);

@@ -16,7 +16,7 @@
 
 <body>
     <h2>Calltag</h2>  
-    <p><%= ((String)request.getAttribute("user"))%></p>
+    <p><%= ((String)request.getAttribute("twitter_url"))%></p>
 
 
 

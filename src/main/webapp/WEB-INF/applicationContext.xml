@@ -25,14 +25,6 @@
         
     <!-- Session Management -->
     <bean name="sessionInterceptor" class="com.calltag.auth.SessionInterceptor"/>    
-
-    
-    
-
-    
-    <!-- App Event Publisher-->
-    <!--<bean name="epublisher" class="org.springframework.context.event."/>-->
-
     
    
    <!-- Twillio SetUp -->
@@ -53,32 +45,31 @@
           class="twitter4j.TwitterFactory">
           <constructor-arg type="twitter4j.conf.Configuration" ref="twitterConf"/>
     </bean>
+    <bean name="mainTwitter"
+          class="twitter4j.Twitter"
+          factory-bean="twitterFactory"
+          factory-method="getInstance">
+    </bean>
+    
     
     
      <!--User--> 
     <bean id="userService" class="com.calltag.service.UserService"/>
     <bean id="userDao" class="com.calltag.model.UserDao" />
  
-        
-<!--     Heroku Config 
-    <bean class="java.net.URI" id="dbUrl">
-        <constructor-arg value="#{systemEnvironment['CLEARDB_DATABASE_URL']}"/>
-    </bean>    -->
-    
-    <!-- Local Database Config -->
+     
+    <!-- Database Set Up  on Local Machine -->        
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:database.properties"/>
-    </bean>
-    
-        
-    <!-- Database SetUp -->
+           <property name="location" value="classpath:database.properties"/>
+    </bean>    
     <bean id="dataSource" 
-      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}" />
         <property name="url" value="${jdbc.url}" />
         <property name="username" value="${jdbc.username}" />
         <property name="password" value="${jdbc.password}" />
-    </bean>
+    </bean>   
+
     
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
