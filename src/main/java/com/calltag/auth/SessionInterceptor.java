@@ -39,4 +39,20 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
      return true;
  }
  
+  public boolean postHandle(HttpServletRequest req,HttpServletResponse res, Object handler){
+      User user = (User) req.getAttribute("user");
+      HttpSession session = req.getSession(true);
+      if(user!=null){
+          session.setMaxInactiveInterval(24*60*60*1000);//one day interval
+          long expiry = session.getCreationTime() + session.getMaxInactiveInterval();
+          user.setSessionExpiryDate(expiry);
+          user.setSessionId(session.getId());
+          userService.updateUser(user);
+      }else{
+          session.invalidate();
+      }
+      
+      return true;
+  }
+ 
 }

@@ -19,42 +19,13 @@
         <property name="suffix" value=".jsp" />
     </bean>
     
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+    
         
     <!-- Session Management -->
     <bean name="sessionInterceptor" class="com.calltag.auth.SessionInterceptor"/>    
-    
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings">
-            <props>
-                <prop key="index.htm">indexController</prop>
-                <prop key="main.htm">mainController</prop>
-                <prop key="twillio.htm">twillioController</prop>
-            </props>
-        </property>
-        <property name="interceptors">
-            <list>
-                <ref bean="sessionInterceptor"/>
-            </list>
-        </property>
-    </bean>
 
-
-    <bean name="indexController"
-          class="com.calltag.controller.IndexController">
-          <property name="viewName" value="index" />
-    </bean>
-    
-    
-    <bean name="mainController"
-          class="com.calltag.controller.MainController">
-          <property name="viewName" value="main" />
-    </bean>
-    
-      <bean name="twillioController"
-          class="com.calltag.controller.TwillioController">
-          <property name="viewName" value="twillio" />
-    </bean>
-    
     
     
 
