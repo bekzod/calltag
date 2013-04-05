@@ -37,14 +37,12 @@ public class MainController {
    
     @RequestMapping(value = "/index.htm", method = RequestMethod.GET)
     public String index(HttpServletRequest req,HttpServletResponse res) {
-        //check if user logged in if so he will be redirected to main page
-        //else user not logged go to index page;
-        if(req.getAttribute("user") != null)return main(req,res);
-        
+        if(req.getAttribute("user") != null) return main(req,res);//already loged go to main
+
         RequestToken requestToken = null;
         try {
             mainTwitter.setOAuthAccessToken(null);
-            requestToken = mainTwitter.getOAuthRequestToken(null);
+            requestToken = mainTwitter.getOAuthRequestToken();
         } catch (TwitterException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -55,7 +53,7 @@ public class MainController {
             req.getSession().setAttribute(REQUEST_TOKEN,requestToken);
         }
         
-        req.setAttribute("twitter_url",requestToken.getAuthenticationURL());
+        req.setAttribute("twitter_url",authUrl);
         return "index";
     }
     
@@ -82,7 +80,7 @@ public class MainController {
         
         long userId = accessToken.getUserId();            
         User user   = service.getUserById(userId);
-        if(user != null){
+        if(user == null){
             user = new User();
             user.setId(userId);
             user.setAccessToken(accessToken.getToken());
