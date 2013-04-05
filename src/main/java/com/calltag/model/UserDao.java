@@ -44,27 +44,26 @@ public class UserDao {
     
     
     public User getUserById(long id){
-        
-        List<User> list = getCurrentSession()
-                         .createQuery("from user where id=?")
+        List<User> list = (List<User>)getCurrentSession()
+                         .createQuery("from User where id=?")
                          .setParameter(0, id)
                          .list();
-        return (User)(list.size() > 0 ? list.get(0) : null);
+        return list.size() > 0 ? list.get(0) : null;
     }
     
     
     public User getUserBySession(String sessionId) {
 //        long now = System.currentTimeMillis()/1000;
-        List<User> list = getCurrentSession()
-                          .createQuery("from user where session_id=?")// checking if session expired
+        List<User> list = (List<User>)getCurrentSession()
+                          .createQuery("from User where session_id=?")// checking if session expired
                           .setParameter(0, sessionId)
                           .list();
-        return (User)(list.size() > 0 ? list.get(0) : null);
+        return list.size() > 0 ? list.get(0) : null;
     }
 
     
     public List<User> getUsers(){
-      return getCurrentSession().createQuery("from user").list();
+      return getCurrentSession().createQuery("from User").list();
     }
     
     
