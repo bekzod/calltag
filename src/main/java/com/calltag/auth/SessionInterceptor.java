@@ -28,13 +28,13 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
  @Override
  public boolean preHandle(HttpServletRequest req,HttpServletResponse res, Object handler){
      HttpSession session = req.getSession();
-//     if(!session.isNew()){
+     if(!session.isNew()){
         User user = userService.getUserBySession(session.getId());
         long expiry = session.getCreationTime() + session.getMaxInactiveInterval();
         if(user!=null && user.getSessionExpiryDate() == expiry ){
            req.setAttribute("user", user);
         }
-//     }
+     }
      return true;
  }
  

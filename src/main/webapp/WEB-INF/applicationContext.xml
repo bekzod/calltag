@@ -24,7 +24,10 @@
     
         
     <!-- Session Management -->
-    <bean name="sessionInterceptor" class="com.calltag.auth.SessionInterceptor"/>    
+    <mvc:interceptors>
+        <bean class="com.calltag.auth.SessionInterceptor" />
+    </mvc:interceptors>    
+        
     
    
    <!-- Twillio SetUp -->
