@@ -64,8 +64,8 @@ public class MainController {
         String oauthToken    = req.getParameter("oauth_token");
         String oauthVerifier = req.getParameter("oauth_verifier");
         
-        AccessToken accessToken = null;
-        RequestToken requestToken = (RequestToken)req.getAttribute(REQUEST_TOKEN);
+        AccessToken accessToken   = null;
+        RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
         
         if(requestToken == null) return index(req,res);//couldn't retrieve requestToken go to index
         

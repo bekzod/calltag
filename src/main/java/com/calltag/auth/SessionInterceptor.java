@@ -48,8 +48,6 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
           user.setSessionExpiryDate(expiry);
           user.setSessionId(session.getId());
           userService.updateUser(user);
-      }else{
-          session.invalidate();
       }
       
       return true;
