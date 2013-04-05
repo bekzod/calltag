@@ -46,7 +46,7 @@ public class UserDao {
     public User getUserById(long id){
         
         List<User> list = getCurrentSession()
-                         .createSQLQuery("select * from user where id=?")
+                         .createSQLQuery("from user where id=?")
                          .setParameter(0, id)
                          .list();
         return (User)(list.size() > 0 ? list.get(0) : null);
@@ -56,7 +56,7 @@ public class UserDao {
     public User getUserBySession(String sessionId) {
 //        long now = System.currentTimeMillis()/1000;
         List<User> list = getCurrentSession()
-                          .createSQLQuery("select * from user where session_id=?")// checking if session expired
+                          .createSQLQuery("from user where session_id=?")// checking if session expired
                           .setParameter(0, sessionId)
                           .list();
         return (User)(list.size() > 0 ? list.get(0) : null);
