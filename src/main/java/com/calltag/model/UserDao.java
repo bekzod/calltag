@@ -60,7 +60,6 @@ public class UserDao {
                 .list().get(0);
     }
 
-   
     
     public List<User> getUsers(){
       return getCurrentSession().createQuery("from User").list();

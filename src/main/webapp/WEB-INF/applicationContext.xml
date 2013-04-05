@@ -17,7 +17,11 @@
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
-    </bean>    
+    </bean>
+    
+        
+    <!-- Session Management -->
+    <bean name="sessionInterceptor" class="com.calltag.auth.SessionInterceptor"/>    
     
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
@@ -26,6 +30,11 @@
                 <prop key="main.htm">mainController</prop>
                 <prop key="twillio.htm">twillioController</prop>
             </props>
+        </property>
+        <property name="interceptors">
+            <list>
+                <ref bean="sessionInterceptor"/>
+            </list>
         </property>
     </bean>
 
@@ -46,6 +55,9 @@
           <property name="viewName" value="twillio" />
     </bean>
     
+    
+    
+
     
     <!-- App Event Publisher-->
     <!--<bean name="epublisher" class="org.springframework.context.event."/>-->
