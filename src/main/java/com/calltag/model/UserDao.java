@@ -44,11 +44,11 @@ public class UserDao {
     
     
     public User getUserById(long id){
-    List<User> list = getCurrentSession()
-                     .createSQLQuery("select * from user where id=?")
-                     .setParameter(0, id)
-                     .list();
-        return list.size() > 0 ? list.get(0) : null;
+        List<User> list = getCurrentSession()
+                         .createSQLQuery("select * from user where id=?")
+                         .setParameter(0, id)
+                         .list();
+        return (User)(list.size() > 0 ? list.get(0) : null);
     }
     
     
@@ -58,7 +58,7 @@ public class UserDao {
                           .createSQLQuery("select * from user where session_id=?")// checking if session expired
                           .setParameter(0, sessionId)
                           .list();
-        return list.size()>0?list.get(0):null;
+        return (User)(list.size() > 0 ? list.get(0) : null);
     }
 
     
