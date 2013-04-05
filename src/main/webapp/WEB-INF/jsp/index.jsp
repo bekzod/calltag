@@ -18,6 +18,7 @@
     <h2>Calltag</h2>  
     <p><%= ((String)request.getAttribute("twitter_url"))%></p>
 
+    <p><%= ((String)request.getAttribute("test"))%></p>
 
 
 <script src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>
