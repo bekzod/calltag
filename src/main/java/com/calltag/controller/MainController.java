@@ -54,7 +54,7 @@ public class MainController {
             req.getSession().setAttribute(REQUEST_TOKEN,requestToken);
         }
         
-        req.setAttribute("twitter_url",requestToken);
+        req.setAttribute("twitter_url",requestToken.getAuthenticationURL());
         return "index";
     }
     
