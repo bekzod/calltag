@@ -8,17 +8,13 @@
     <title>Tweet Call</title>    
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="resources/css/main.css" rel="stylesheet" />
+    <link href="resources/css/checkswitch.css" rel="stylesheet" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-
-    <script type="text/javascript">
-       $(document).ready(function() {
-         
+    <script src="resources/js/checkswitch.js"></script>
 
 
-       });
-     </script>
 </head>
 <body>
     
@@ -38,12 +34,14 @@
                     <input type="checkbox" 
                     id="is_call_enabled" 
                     name="is_call_enabled" 
+                    <%= user.getIsCallEnabled()?"checked":""%>
                     value="1"> <h3 class="pinkText">#call</h3>
                 </label>
                 <label class="checkbox inline">
                     <input type="checkbox" 
                     id="is_text_enabled" 
-                    name="is_text_enabled" 
+                    name="is_text_enabled"
+                    <%= user.getIsTextEnabled()?"checked":""%> 
                     value="1"> <h3 class="pinkText">#text</h3>
                 </label>
                 <button type="submit" class="btn">Save</button>
