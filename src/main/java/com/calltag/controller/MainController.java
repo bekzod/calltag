@@ -71,7 +71,7 @@ public class MainController {
         String oauthVerifier = req.getParameter("oauth_verifier");
         
         RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
-        if(requestToken == null||oauthToken==null||oauthVerifier==null) return index(req,res);//couldn't retrieve requestToken go to index
+        if(requestToken == null||oauthToken==null||oauthVerifier==null) return "redirect:/index.htm?error=1";//couldn't retrieve requestToken go to index
 
         twitter4j.User twitterUser = null;
         AccessToken accessToken    = null;
@@ -83,7 +83,7 @@ public class MainController {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if(accessToken==null||twitterUser==null)return index(req,res);//failed return to index
+        if(accessToken==null||twitterUser==null)return "redirect:/index.htm?error=1";//failed return to index
         
         long userId = accessToken.getUserId();            
         User user   = service.getUserById(userId);
@@ -115,13 +115,13 @@ public class MainController {
             req.getSession().invalidate();
         }
                 
-        return "redirect:/index";
+        return "redirect:/index.htm";
     }
     
     @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
     public String main(HttpServletRequest req,HttpServletResponse res){
         User user = (User) req.getAttribute("user");
-        if(user==null) return index(req,res);
+        if(user==null) return "redirect:/index.htm";
         
         //user can enable disable texting and calling feature
         String isCallEnabled = req.getParameter("is_call_enabled");

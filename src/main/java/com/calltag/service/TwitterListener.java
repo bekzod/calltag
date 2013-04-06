@@ -50,12 +50,13 @@ public class TwitterListener  implements StatusListener {
     
     private void refreshStream(){
         String[] trackWords = {TEXT_TRIGGER,CALL_TRIGGER};
-        List<User> userList = userService.getUsers();
-        long[] ids = new long[userList.size()];
+//        List<User> userList = userService.getUsers();
+//        long[] ids = new long[userList.size()];
+        long[] ids = {39681000};
         
-        for(int i = 0;i<ids.length;i++){
-            ids[i] = userList.get(i).getId();
-        }
+//        for(int i = 0;i<ids.length;i++){
+//            ids[i] = userList.get(i).getId();
+//        }
         
         FilterQuery query = new FilterQuery();
         query.follow(ids);
