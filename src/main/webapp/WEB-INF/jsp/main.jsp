@@ -30,22 +30,26 @@
     <div class="row">
         <div class="span12 pagination-centered">
             <form action="main.htm" method="POST">
-                <div class="switch">
                     <label class="inline">
+                    <div class="switch">
                         <input type="checkbox" 
                         id="is_call_enabled" 
                         name="is_call_enabled" 
                         <%= user.getIsCallEnabled()?"checked":""%>
-                        value="1"> <h3 class="pinkText">#call</h3>
+                        value="1"> 
+                    </div>
+                        <h3 class="pinkText">#call</h3>
                     </label>
                     <label class="inline">
+                    <div class="switch">
                         <input type="checkbox" 
                         id="is_text_enabled" 
                         name="is_text_enabled"
                         <%= user.getIsTextEnabled()?"checked":""%> 
-                        value="1"> <h3 class="pinkText">#text</h3>
+                        value="1">
+                    </div>
+                        <h3 class="pinkText">#text</h3>
                     </label>
-                </div>
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
