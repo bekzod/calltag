@@ -68,7 +68,7 @@ public class MainController {
     //called by twitter when user attempts to login
     @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
     public String login(HttpServletRequest req,HttpServletResponse res) {
-        if(req.getAttribute("user") != null) return main(req,res);//already loged go to main
+        if(req.getAttribute("user") != null) return "redirect:/main.htm";;//already loged go to main
 
         String oauthToken    = req.getParameter("oauth_token");
         String oauthVerifier = req.getParameter("oauth_verifier");
@@ -105,9 +105,7 @@ public class MainController {
         req.setAttribute("user",user);//saving user for session save
         return main(req,res);
     }
-    
-    
-    
+        
     
     
     

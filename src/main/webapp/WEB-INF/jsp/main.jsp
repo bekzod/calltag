@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tweet Call</title>    
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="main.css" rel="stylesheet" />
+    <link href="resources/css/main.css" rel="stylesheet" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
@@ -59,6 +59,12 @@
             <h3><span class="pinkText">#call</span> <span class="pinkText">+447414651623</span> 
             Hey Rob, tweet is calling you!
             </h3>
+        </div>
+    </div>
+
+     <div class="row">
+        <div class="span12 pagination-centered">
+            <a href="logout.hm" class='btn'>log out</a>
         </div>
     </div>
 
