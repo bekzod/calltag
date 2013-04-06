@@ -4,6 +4,8 @@
  */
 package com.calltag.service;
 
+import com.calltag.event.UserEvent;
+import com.calltag.event.UserEventPublisher;
 import com.calltag.model.User;
 import com.calltag.model.UserDao;
 import java.util.List;
@@ -15,24 +17,23 @@ import org.springframework.context.ApplicationEventPublisherAware;
  *
  * @author bek
  */
-public class UserService{
+public class UserService extends UserEventPublisher{
    @Autowired
    private UserDao userDao;
-//   private ApplicationEventPublish er epublisher;
    
     public void addUser(User user) {
         userDao.addUser(user);
-//        epublisher.publishEvent(new UserEvent(UserEvent.USER_ADDED,user));
+        publishEvent(new UserEvent(UserEvent.USER_ADDED,user));
     }
 
     public void updateUser(User user) {
         userDao.updateUser(user);
-//        epublisher.publishEvent(new UserEvent(UserEvent.USER_UPDATED, user));
+        publishEvent(new UserEvent(UserEvent.USER_UPDATED, user));
     }
 
     public void removeUser(User user) {
         userDao.removeUser(user);
-//        epublisher.publishEvent(new UserEvent(UserEvent.USER_REMOVED, user));
+        publishEvent(new UserEvent(UserEvent.USER_REMOVED, user));
     }
 
     public User getUserById(long id) {

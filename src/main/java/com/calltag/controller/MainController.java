@@ -62,6 +62,9 @@ public class MainController {
         return "index";
     }
     
+    
+    
+    
     //called by twitter when user attempts to login
     @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
     public String login(HttpServletRequest req,HttpServletResponse res) {
@@ -104,6 +107,10 @@ public class MainController {
     }
     
     
+    
+    
+    
+    
     //called by twitter when user attempts to login
     @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
     public String logout(HttpServletRequest req,HttpServletResponse res) {
@@ -117,6 +124,12 @@ public class MainController {
                 
         return "redirect:/index.htm";
     }
+    
+    
+    
+    
+    
+    
     
     @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
     public String main(HttpServletRequest req,HttpServletResponse res){
@@ -139,6 +152,10 @@ public class MainController {
         
         return "main";
     }
+    
+    
+    
+    
     
     @RequestMapping(value = "/twillo.htm", method = RequestMethod.GET)
     public String twillo(HttpServletRequest req,HttpServletResponse res) {

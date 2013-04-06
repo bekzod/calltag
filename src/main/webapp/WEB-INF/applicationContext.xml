@@ -24,22 +24,8 @@
     
         
     <!-- Session Management -->
-<!--    <bean name="sessionInterceptor" class="com.calltag.auth.SessionInterceptor" />
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-        <property name="interceptors" ref="sessionInterceptor" />
-    </bean>
-    
-    <mvc:interceptor>
-        <mvc:mapping path="/fx"/>
-        ...
-    </mvc:interceptor>-->
-    
     <mvc:interceptors>
         <bean class="com.calltag.auth.SessionInterceptor" />
-<!--        <mvc:interceptor>
-            <mapping path="/fx"/>
-            <bean class="com.fxiapi.auth.LoginInterceptor" />
-        </mvc:interceptor>-->
     </mvc:interceptors>
 
     
@@ -52,6 +38,7 @@
         <constructor-arg type="java.lang.String" value="442003331641"/>
     </bean>
     
+    
                   
     <!-- Twitter SetUp -->
     <bean name="twitterConf"
@@ -62,20 +49,26 @@
           class="twitter4j.TwitterFactory">
           <constructor-arg type="twitter4j.conf.Configuration" ref="twitterConf"/>
     </bean>
+    <bean name="twitterStreamFactory"
+          class="twitter4j.TwitterStreamFactory">
+        <constructor-arg type="twitter4j.conf.Configuration" ref="twitterConf"/>
+    </bean>
+    
+    
+    
+    
     <bean name="mainTwitter"
           class="twitter4j.Twitter"
           factory-bean="twitterFactory"
           factory-method="getInstance">
     </bean>
-    
-    
-    
+        
      <!--User--> 
     <bean id="userService" class="com.calltag.service.UserService"/>
     <bean id="userDao" class="com.calltag.model.UserDao" />
  
      
-    <!-- Database Set Up  on Local Machine -->        
+    <!-- Database Set Up-->        
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
            <property name="location" value="classpath:database.properties"/>
     </bean>    
@@ -105,7 +98,6 @@
     </bean>
     
     <tx:annotation-driven transaction-manager="transactionManager"/>
- 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

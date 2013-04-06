@@ -4,6 +4,8 @@
  */
 package com.calltag.service;
 
+import com.calltag.event.UserEvent;
+import com.calltag.event.UserEventListener;
 import com.calltag.model.User;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -15,65 +17,76 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
-import twitter4j.DirectMessage;
 import twitter4j.FilterQuery;
-import twitter4j.HashtagEntity;
 import twitter4j.StallWarning;
 import twitter4j.StatusStream;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
 import twitter4j.UserStreamListener;
 import twitter4j.auth.AccessToken;
+import twitter4j.conf.Configuration;
+import twitter4j.conf.PropertyConfiguration;
 /**
  *
  * @author bek
  */
-public class TwitterListener  implements StatusListener {
+public class TwitterListener extends UserEventListener  implements StatusListener {
     
     @Autowired
     private Phone phone;
-    
     @Autowired
     private UserService userService;
-        
-    private TwitterStreamFactory twitterFactory;
+    @Autowired
+    private TwitterStreamFactory twitterStreamFactory;
+    
     private TwitterStream stream;
     
     public static final String CALL_TRIGGER = "$call";
     public static final String TEXT_TRIGGER = "$text";
+    
+    @PostConstruct
+    public void init() {
+        refreshStream();
+    }
 
-    public TwitterListener(){
-        twitterFactory = new TwitterStreamFactory();
+    @PreDestroy
+    public void destroy() {
+        if (stream != null) {
+            stream.shutdown();
+            stream.cleanUp();
+            stream = null;
+        }
+    }
+    
+    
+    @Override
+    protected void onUserEvent(String type,User user){
+        if(type.equals(UserEvent.USER_ADDED) || type.equals(UserEvent.USER_ADDED)){
+            this.refreshStream();
+        }
     }
     
     
     private void refreshStream(){
-        String[] trackWords = {TEXT_TRIGGER,CALL_TRIGGER};
-//        List<User> userList = userService.getUsers();
-//        long[] ids = new long[userList.size()];
-        long[] ids = {39681000};
+        List<User> userList = userService.getUsers();
+        long[] ids = new long[userList.size()];
         
-//        for(int i = 0;i<ids.length;i++){
-//            ids[i] = userList.get(i).getId();
-//        }
-        
-        FilterQuery query = new FilterQuery();
-        query.follow(ids);
-        query.track(trackWords);
-        
-        AccessToken token = new AccessToken("39681000-kuY8WvDVCMXGOZl0Wl3gBrQEWO00gc0SsYBaEc6Vg", "LiIc7aKFrcCwMHJkgIQrtUfOS8rKwnHzv0vEttU0Ng");
-
-        TwitterStream newStream = twitterFactory.getInstance(token);
+        for(int i = 0;i<ids.length;i++){
+            ids[i] = userList.get(i).getId();
+        }
+                
+        TwitterStream newStream = twitterStreamFactory.getInstance();
         newStream.addListener(this);
-        newStream.filter(query);
+        newStream.filter(new FilterQuery(ids));
         
         if(stream != null){
             stream.shutdown();
             stream.cleanUp();
             stream = null;
         }
-        
         stream = newStream;
     }
         
