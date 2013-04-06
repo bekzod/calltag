@@ -1,5 +1,5 @@
 <%@page import="com.calltag.model.User"%>
-<% User user = (User)request.getAttribute("user"); %>
+<% User user = (User)request.getAttribute("user"); %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,13 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tweet Call</title>    
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="resources/css/main.css" rel="stylesheet" />
-    <link href="resources/css/bootstrapSwitch.css" rel="stylesheet" />
+    <link href="../../resources/css/main.css" rel="stylesheet" />
+    <link href="../../resources/css/bootstrapSwitch.css" rel="stylesheet" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-    <script src="resources/js/bootstrapSwitch.js"></script>
-
+    <script src="../../resources/js/bootstrapSwitch.js"></script>
 
 </head>
 <body>
@@ -30,7 +29,8 @@
     <div class="row">
         <div class="span12 pagination-centered">
             <form action="main.htm" method="POST">
-                    <label class="inline">
+                <label class="inline checkbox">
+                    <h3 class="pinkText">#call</h3>
                     <div class="switch">
                         <input type="checkbox" 
                         id="is_call_enabled" 
@@ -38,9 +38,9 @@
                         <%= user.getIsCallEnabled()?"checked":""%>
                         value="1"> 
                     </div>
-                        <h3 class="pinkText">#call</h3>
-                    </label>
-                    <label class="inline">
+                </label>
+                <label class="inline checkbox">
+                    <h3 class="pinkText">#text</h3>
                     <div class="switch">
                         <input type="checkbox" 
                         id="is_text_enabled" 
@@ -48,8 +48,7 @@
                         <%= user.getIsTextEnabled()?"checked":""%> 
                         value="1">
                     </div>
-                        <h3 class="pinkText">#text</h3>
-                    </label>
+                </label><br/><br/>
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>

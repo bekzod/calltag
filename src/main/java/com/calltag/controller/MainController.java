@@ -123,9 +123,7 @@ public class MainController {
         return "redirect:/index.htm";
     }
     
-    
-    
-    
+       
     
     
     
@@ -138,9 +136,11 @@ public class MainController {
         if(req.getMethod().equals("POST")){
             String isCallEnabled = req.getParameter("is_call_enabled");
             String isTextEnabled = req.getParameter("is_text_enabled");
-
-            user.setIsCallEnabled(Integer.parseInt(isCallEnabled) == 1);
-            user.setIsTextEnabled(Integer.parseInt(isTextEnabled) == 1);
+            if(isCallEnabled==null)isCallEnabled="";
+            if(isTextEnabled==null)isTextEnabled="";
+            
+            user.setIsCallEnabled(isCallEnabled.equals("1"));
+            user.setIsTextEnabled(isTextEnabled.equals("1"));
         }
 
         //user updated in post handler so need to update here
