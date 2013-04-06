@@ -66,18 +66,20 @@ public class MainController {
         String oauthToken    = req.getParameter("oauth_token");
         String oauthVerifier = req.getParameter("oauth_verifier");
         
-        AccessToken accessToken   = null;
         RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
-        
         if(requestToken == null||oauthToken==null||oauthVerifier==null) return index(req,res);//couldn't retrieve requestToken go to index
-        
+
+        twitter4j.User twitterUser = null;
+        AccessToken accessToken    = null;
+
         try {
            accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
+           twitterUser = mainTwitter.showUser(accessToken.getUserId());
         } catch (TwitterException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if(accessToken==null)return index(req,res);//failed return to index
+        if(accessToken==null||twitterUser==null)return index(req,res);//failed return to index
         
         long userId = accessToken.getUserId();            
         User user   = service.getUserById(userId);
@@ -85,9 +87,11 @@ public class MainController {
         if(user == null){
             user = new User();
             user.setId(userId);
+            user.setProfilePictureUrl(twitterUser.getProfileImageURL());
+            user.setName(twitterUser.getName());
             user.setAccessToken(accessToken.getToken());
             user.setAccessTokenSecret(accessToken.getTokenSecret());
-            user.setName(accessToken.getScreenName());
+            user.setTwitterAccountName(accessToken.getScreenName());
             service.addUser(user);
         }
         
@@ -127,8 +131,8 @@ public class MainController {
             boolean isEnabled = Integer.parseInt(isTextEnabled)==1;
             user.setIsCallEnabled(isEnabled);
         }
+        //user updated in post handler so need to update here
         
-        mainTwitter.setOAuthAccessToken(new AccessToken(user.getAccessToken(),user.getAccessTokenSecret()));
         return "main";
     }
     
