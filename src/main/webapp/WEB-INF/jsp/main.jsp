@@ -2,96 +2,44 @@
 <% User user = (User)request.getAttribute("user"); %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tweet Call</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet Call</title>    
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="resources/css/main.css" rel="stylesheet" />
 
-        <link href="netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link href="resources/css/main.css" rel="stylesheet" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    
+    <p><%= user.getProfilePictureUrl()%></p>
 
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-        <script src="netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <div id="container">
+        <div class="row">
+            <div class="span7">
+                <h3>hi !<%= user.getName()%>, how are you today?</h3>
+            </div>
+        </div>
 
-    </head>
-    <body>
-        
-        <p><%= user.getName()%></p>
-        <p><%= user.getTwitterAccountName()%></p>
-        <p><%= user.getProfilePictureUrl()%></p>
-        <p><%= user.getIsCallEnabled()%></p>
-        <p><%= user.getIsTextEnabled()%></p>
-        
-        
-         <div id="container">
+        <div class="row">
+            <div class="span7">
+                <form action="main.htm" method="GET">
+                    <label class="checkbox inline">
+                        <input type="checkbox" id="is_call_enabled" checked="<%= user.getIsCallEnabled()%>"  value="option1"> 1
+                    </label>
+                    <label class="checkbox inline">
+                        <input type="checkbox" id="is_text_enabled" checked="<%= user.getIsTextEnabled()%>" value="option2"> 2
+                    </label>
+                    <button type="submit" class="btn">Save</button>
+                </form>
+            </div>
+        </div>
 
-            <header>
-                <h1><img src="resources/images/twitter-bird.jpg" ></h1>
-                <div id="title" ><img src="resources/images/title.png" ></div>
-            </header>	
-
-            <section id="feature">
-                <a ><img src="resources/images/inst.png"  /></a>
-                <div id="feature-info">
-
-                    <div class="callswitch">
-                        <input type="checkbox" name="callswitch" class="callswitch-checkbox" id="callswitch" checked>
-                        <label class="callswitch-label" for="callswitch">
-                            <div class="callswitch-inner"></div>
-                            <div class="callswitch-switch"></div>
-                        </label>
-                    </div> 
-                    <div class="textswitch">
-                        <input type="checkbox" name="textswitch" class="textswitch-checkbox" id="textswitch" checked>
-                        <label class="textswitch-label" for="textswitch">
-                            <div class="textswitch-inner"></div>
-                            <div class="textswitch-switch"></div>
-                        </label>
-                    </div>
-
-                </div>
-
-            </section>
-            <section id="content">
-                <div class="tilt">
-                    <div class="bucket">
-                        <a  id="step1">Step1</a>
-                        <p id='steps'>Tweet(call)</p>
-                        <p>Hey guys, house party tonight at 10  $call (number) </p>
-                    </div>
-                </div>
-                <div class="tilt">
-                    <div class="bucket">
-                        <a id="step2">Step2</a>
-                        <p id='steps'>Tweet(text)</p>
-                        <p>Hey guys, house party tonight at 10  $text (number)</p>
-                    </div>
-                </div>
-                <div class="tilt">
-                    <div class="bucket">
-                        <a id="step3">Step3</a>
-                        <p id='steps'>Sit back</p>
-                        <p>Sit back and we ll take care of the delivery"</p>
-                    </div>
-                </div>
-                <div class="tilt">
-                    <div class="bucket">
-                        <a id="step4">Step4</a>
-                        <p id='steps'>Done</p>
-                        <p>Friends receive sms or call "Hey guys,house party tonight at 10"</p>
-                    </div>
-                </div>
-                <div class="savebutton_wrap">
-                    <a class="savebutton_bRight slidebttn" id="savebutton_bRight" >Save</a>       
-                </div>
-            </section>
-        </div>	
-        <footer>
-            <p id="copyright">&copy; Copyright Alex - Bekhzod - Rachel</p>
-            <p id="back-top"><a>Back to top</a></p>
-        </footer>
-        
-    </body>
+    </div>
+    
+</body>
 </html>
 
 
