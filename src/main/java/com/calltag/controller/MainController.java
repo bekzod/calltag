@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.auth.AccessToken;
@@ -106,13 +107,28 @@ public class MainController {
             req.getSession().invalidate();
         }
                 
-        return "index";
+        return "redirect/:index";
     }
     
     @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
-    public String main(HttpServletRequest req,HttpServletResponse res) {
-        if(req.getAttribute("user")==null) return index(req,res);
+    public String main(HttpServletRequest req,HttpServletResponse res){
+        User user = (User) req.getAttribute("user");
+        if(user==null) return index(req,res);
         
+        //user can enable disable texting and calling feature
+        String isCallEnabled = req.getParameter("is_call_enabled");
+        String isTextEnabled = req.getParameter("is_text_enabled");
+        
+        if(isCallEnabled!=null){
+            boolean isEnabled = Integer.parseInt(isCallEnabled)==1;
+            user.setIsCallEnabled(isEnabled);
+        }
+        if(isTextEnabled!=null){
+            boolean isEnabled = Integer.parseInt(isTextEnabled)==1;
+            user.setIsCallEnabled(isEnabled);
+        }
+        
+        mainTwitter.setOAuthAccessToken(new AccessToken(user.getAccessToken(),user.getAccessTokenSecret()));
         return "main";
     }
     

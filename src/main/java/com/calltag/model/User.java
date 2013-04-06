@@ -11,6 +11,8 @@ public class User implements Serializable {
     private long id;
     @Column(name = "name")
     private String name;
+    @Column(name = "twitter_account_name")
+    private String twitterAccountName;
     @Column(name = "access_token")
     private String accessToken;
     @Column(name = "access_token_secret")
@@ -22,7 +24,9 @@ public class User implements Serializable {
     @Column(name = "is_call_enabled")
     private boolean isCallEnabled;
     @Column(name = "is_text_enabled")
-    private boolean isTextEnabled;    
+    private boolean isTextEnabled;
+    @Column(name = "profile_picture_url")
+    private String profilePictureUrl;
                     
     public long getId() {
         return id;
@@ -86,6 +90,22 @@ public class User implements Serializable {
     
     public void setSessionExpiryDate(long date){
           sessionExpiryDate = date;
+    }
+    
+    public String getTwitterAccountName(){
+        return twitterAccountName;
+    }
+    
+    public void setTwitterAccountName(String name){
+          twitterAccountName = name;
+    }
+    
+    public String getProfilePictureUrl(){
+        return profilePictureUrl;
+    }
+    
+    public void setProfilePictureUrl(String url){
+          profilePictureUrl = url;
     }
     
     

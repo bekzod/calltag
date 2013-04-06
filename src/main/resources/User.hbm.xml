@@ -35,6 +35,14 @@
         <property name="isTextEnabled" type="boolean">
             <column name="is_text_enabled"/>
         </property>
+        
+         <property name="profilePictureUrl" type="string">
+            <column name="profile_picture_url"/>
+         </property>
+         
+         <property name="twitterAccountName" type="string">
+            <column name="twitter_account_name"/>
+         </property>
 
     </class>
 </hibernate-mapping>

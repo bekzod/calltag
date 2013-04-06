@@ -14,5 +14,6 @@
     <body>
         <h1>Hello World!</h1>
         <p><%= ((String) request.getAttribute("name"))%></p>
+        <p><%= ((String) request.getAttribute("name"))%></p>
     </body>
 </html>
