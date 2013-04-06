@@ -128,8 +128,8 @@ public class TwitterListener  implements StatusListener {
         //creating endpoint for twillio which will be 
         //twillio server called when phone is picked up
         String endPoint = "calltag.heroku.com/twillio.htm";
-               endPoint+= "?tweetid="+id;
-               endPoint+= "&authorid="+userid;
+               endPoint+= "?tweet_id="+id;
+               endPoint+= "&author_id="+userid;
                
         phone.call(phoneNumber,endPoint);
     }

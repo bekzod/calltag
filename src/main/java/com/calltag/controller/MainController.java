@@ -5,9 +5,12 @@
 package com.calltag.controller;
 
 import com.calltag.model.User;
+import static com.calltag.service.TwitterListener.TEXT_TRIGGER;
 import com.calltag.service.UserService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.auth.AccessToken;
@@ -84,10 +88,10 @@ public class MainController {
         long userId = accessToken.getUserId();            
         User user   = service.getUserById(userId);
         
-        if(user == null){
+        if(user == null){ //use doens't exist create new user
             user = new User();
             user.setId(userId);
-            user.setProfilePictureUrl(twitterUser.getProfileImageURL());
+            user.setProfilePictureUrl(twitterUser.getBiggerProfileImageURL());
             user.setName(twitterUser.getName());
             user.setAccessToken(accessToken.getToken());
             user.setAccessTokenSecret(accessToken.getTokenSecret());
@@ -111,7 +115,7 @@ public class MainController {
             req.getSession().invalidate();
         }
                 
-        return "redirect/:index";
+        return "redirect:/index";
     }
     
     @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
@@ -138,7 +142,26 @@ public class MainController {
     
     @RequestMapping(value = "/twillo.htm", method = RequestMethod.GET)
     public String twillo(HttpServletRequest req,HttpServletResponse res) {
-
+        String tweetid   = req.getParameter("tweet_id");
+        String authorid  = req.getParameter("author_id");
+        
+        if(tweetid != null && authorid != null){
+            Status status = null;
+            try {
+                status = mainTwitter.showStatus(Long.parseLong(tweetid));
+            } catch (TwitterException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(status!=null){
+                String text = status.getText();
+                //escaping phone numbers and call,text trigger keywords
+                text = text.replaceFirst(TEXT_TRIGGER, "").replace(TEXT_TRIGGER, "");
+                text = Pattern.compile("(\\+\\d{12})").matcher(text).replaceAll("");
+                req.setAttribute("text", res);
+            }
+           
+        }       
         return "twillo";
     }
 }
