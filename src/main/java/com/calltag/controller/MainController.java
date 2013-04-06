@@ -135,13 +135,14 @@ public class MainController {
         if(user==null) return "redirect:/index.htm";
         
         //user can enable disable texting and calling feature
-        if(req.getMethod().equals(RequestMethod.POST)){
+        if(req.getMethod().equals("POST")){
             String isCallEnabled = req.getParameter("is_call_enabled");
             String isTextEnabled = req.getParameter("is_text_enabled");
 
             user.setIsCallEnabled(Integer.parseInt(isCallEnabled) == 1);
             user.setIsTextEnabled(Integer.parseInt(isTextEnabled) == 1);
         }
+
         //user updated in post handler so need to update here
         return "main";
     }
