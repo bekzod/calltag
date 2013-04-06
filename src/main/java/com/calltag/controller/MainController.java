@@ -142,9 +142,10 @@ public class MainController {
             boolean isEnabled = Integer.parseInt(isCallEnabled)==1;
             user.setIsCallEnabled(isEnabled);
         }
+       
         if(isTextEnabled!=null){
             boolean isEnabled = Integer.parseInt(isTextEnabled)==1;
-            user.setIsCallEnabled(isEnabled);
+            user.setIsTextEnabled(isEnabled);
         }
         //user updated in post handler so need to update here
         
