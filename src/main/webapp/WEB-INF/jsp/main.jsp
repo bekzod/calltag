@@ -31,14 +31,14 @@
         <div class="span12 pagination-centered">
             <form action="main.htm" method="POST">
                 <div class="switch">
-                    <label class="checkbox inline">
+                    <label class="inline">
                         <input type="checkbox" 
                         id="is_call_enabled" 
                         name="is_call_enabled" 
                         <%= user.getIsCallEnabled()?"checked":""%>
                         value="1"> <h3 class="pinkText">#call</h3>
                     </label>
-                    <label class="checkbox inline">
+                    <label class="inline">
                         <input type="checkbox" 
                         id="is_text_enabled" 
                         name="is_text_enabled"
