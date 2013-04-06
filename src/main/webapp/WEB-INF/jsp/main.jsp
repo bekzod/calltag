@@ -26,7 +26,7 @@
 
     <div class="row mainText">
         <div class="span12 pagination-centered">
-            <h2>hi <span class="pinkText"><%= user.getName()%></span>!, how are you today?</h2>
+            <h2>hi <%= user.getName()%> !, how are you today?</h2>
             <h3>Ready for <span class="pinkText">#text</span>ing and <span class="pinkText">#call</span>ing</h3><h4>Choose options and save.</h4>
         </div>
     </div>
@@ -37,12 +37,14 @@
                 <label class="checkbox inline">
                     <input type="checkbox" 
                     id="is_call_enabled" 
-                    value="is_call_enabled"> <h3 class="pinkText">#call</h3>
+                    name="is_call_enabled" 
+                    value="1"> <h3 class="pinkText">#call</h3>
                 </label>
                 <label class="checkbox inline">
                     <input type="checkbox" 
                     id="is_text_enabled" 
-                    value="is_text_enabled"> <h3 class="pinkText">#text</h3>
+                    name="is_text_enabled" 
+                    value="1"> <h3 class="pinkText">#text</h3>
                 </label>
                 <button type="submit" class="btn">Save</button>
             </form>
