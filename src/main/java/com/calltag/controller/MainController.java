@@ -129,26 +129,20 @@ public class MainController {
     
     
     
-    @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/main.htm", method = {RequestMethod.GET, RequestMethod.POST })
     public String main(HttpServletRequest req,HttpServletResponse res){
         User user = (User) req.getAttribute("user");
         if(user==null) return "redirect:/index.htm";
         
         //user can enable disable texting and calling feature
-        String isCallEnabled = req.getParameter("is_call_enabled");
-        String isTextEnabled = req.getParameter("is_text_enabled");
-        
-        if(isCallEnabled!=null){
-            boolean isEnabled = Integer.parseInt(isCallEnabled)==1;
-            user.setIsCallEnabled(isEnabled);
-        }
-       
-        if(isTextEnabled!=null){
-            boolean isEnabled = Integer.parseInt(isTextEnabled)==1;
-            user.setIsTextEnabled(isEnabled);
+        if(req.getMethod().equals(RequestMethod.POST)){
+            String isCallEnabled = req.getParameter("is_call_enabled");
+            String isTextEnabled = req.getParameter("is_text_enabled");
+
+            user.setIsCallEnabled(Integer.parseInt(isCallEnabled) == 1);
+            user.setIsTextEnabled(Integer.parseInt(isTextEnabled) == 1);
         }
         //user updated in post handler so need to update here
-        
         return "main";
     }
     

@@ -8,11 +8,11 @@
     <title>Tweet Call</title>    
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="resources/css/main.css" rel="stylesheet" />
-    <link href="resources/css/checkswitch.css" rel="stylesheet" />
+    <link href="resources/css/bootstrapSwitch.css" rel="stylesheet" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-    <script src="resources/js/checkswitch.js"></script>
+    <script src="resources/js/bootstrapSwitch.js"></script>
 
 
 </head>
@@ -29,7 +29,7 @@
 
     <div class="row">
         <div class="span12 pagination-centered">
-            <form action="main.htm" method="GET">
+            <form action="main.htm" method="POST">
                 <label class="checkbox inline">
                     <input type="checkbox" 
                     id="is_call_enabled" 
@@ -64,7 +64,7 @@
 
      <div class="row">
         <div class="span12 pagination-centered">
-            <a href="logout.hm" class='btn'>log out</a>
+            <a href="logout.htm" class='btn'>log out</a>
         </div>
     </div>
 
