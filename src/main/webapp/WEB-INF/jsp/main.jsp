@@ -1,30 +1,18 @@
-<%-- 
-    Document   : main
-    Created on : Apr 1, 2013, 10:27:30 PM
-    Author     : bek
---%>
 <%@page import="com.calltag.model.User"%>
 <% User user = (User)request.getAttribute("user"); %>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-     <!--[if IE]>
-       <script>
-         document.createElement('header');
-         document.createElement('footer');
-         document.createElement('section');
-         document.createElement('nav');
-       </script>
-       <![endif]-->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tweet Call</title>
 
+        <link href="netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="resources/css/main.css" rel="stylesheet" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    
-       
-        <title>TweeTalk</title>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
     </head>
     <body>
         

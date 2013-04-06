@@ -1,78 +1,56 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <link href="resources/css/homepage.css" rel="stylesheet" />
-        
-		 <!--[if IE]>
-        <script>
-          document.createElement('header');
-          document.createElement('footer');
-          document.createElement('section');
-          document.createElement('nav');
-        </script>
-        <![endif]-->
-  
-  <title>Call Tag</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet Call</title>
+    
+    <link href="netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="resources/css/homepage.css" rel="stylesheet" />
 
-  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
-  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
-  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css">
-  
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-        
-        <script type="text/javascript">
-            $(function() {
-                $('.slidebttn').hover(
-                        function() {
-                            var $this = $(this);
-                            var $slidelem = $this.prev();
-                            $slidelem.stop().animate({'width': '325px'}, 300);
-                            $slidelem.find('span').stop(true, true).fadeIn();
-                            $this.addClass('button_c');
-                        },
-                        function() {
-                            var $this = $(this);
-                            var $slidelem = $this.prev();
-                            $slidelem.stop().animate({'width': '95px'}, 200);
-                            $slidelem.find('span').stop(true, true).fadeOut();
-                            $this.removeClass('button_c');
-                        }
-                );
-            });
-		</script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+
+            $('.slidebttn').hover(
+                    function() {
+                        var $this = $(this);
+                        var $slidelem = $this.prev();
+                        $slidelem.stop().animate({'width': '325px'}, 300);
+                        $slidelem.find('span').stop(true, true).fadeIn();
+                        $this.addClass('button_c');
+                    },
+                    function() {
+                        var $this = $(this);
+                        var $slidelem = $this.prev();
+                        $slidelem.stop().animate({'width': '95px'}, 200);
+                        $slidelem.find('span').stop(true, true).fadeOut();
+                        $this.removeClass('button_c');
+                    }
+            );
+        });
+    </script>
 
 </head>
 
 <body>
-    <h2>Calltag</h2>  
-    <p><%= ((String)request.getAttribute("twitter_url"))%></p>
-
-    <p><%= ((String)request.getAttribute("test"))%></p>
-
-
-<script src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>
-<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
-<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tab.js"></script>
-
-
 <div id="container">
             <header>
                 <h1><img src="resources/images/twitter-bird.jpg" ></h1>
                 <div id="title" ><img src="resources/images/title.png" ></div>
-            </header>	
+            </header>   
             <section id="feature">
                 <a ><img src="resources/images/phonecall1.jpg" onmouseover="this.src = 'resources/images/phonecall.png'" onmouseout="this.src = 'resources/images/phonecall1.jpg'" alt="Girl phonecall" /></a>
                 <div id="feature-info">
                     <p>Just use our custom hashtag and allow your friends to receive phone calls listening to your tweets.</p>
                     <p>  
                     <div class="button_wrap">
-                            <a  class="button_aRight" id="button_aRight"><span>Use your Twitter ID</span></a>
-                        	<a class="button_bRight slidebttn" id="button_bRight" >Sign In</a>
+                            <a class="button_aRight" id="button_aRight"><span>Use your Twitter ID</span></a>
+                            <a class="button_bRight slidebttn"
+                            href=<%= ((String)request.getAttribute("twitter_url"))%>  id="button_bRight" >Sign In</a>
                     </div>
             </section>
             <section id="content">
@@ -106,10 +84,9 @@
                     </div>
                 </div>
             </section>
-        </div>	
+        </div>  
         <footer>
             <p id="copyright">&copy; Copyright Alex - Bekhzod - Rachel</p>
-            <p id="back-top"><a href="resources/jsp/main.jsp">Back to top</a></p>
         </footer>
 </body>
 </html>
