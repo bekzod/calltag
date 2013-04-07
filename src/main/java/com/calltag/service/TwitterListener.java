@@ -44,8 +44,8 @@ public class TwitterListener extends UserEventListener  implements StatusListene
     
     private TwitterStream stream;
     
-    public static final String CALL_TRIGGER = "$call";
-    public static final String TEXT_TRIGGER = "$text";
+    public static final String CALL_TRIGGER = "#call";
+    public static final String TEXT_TRIGGER = "#text";
     
     @PostConstruct
     public void init() {
@@ -93,13 +93,15 @@ public class TwitterListener extends UserEventListener  implements StatusListene
         
     @Override
     public void onStatus(Status status) {
-       System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
-       User user = userService.getUserById(status.getId());
+//       System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+       User user = userService.getUserById(status.getUser().getId());
        if(user != null)handleTweet(user,status);
     }
     
     
     private void handleTweet(User user,Status status){
+        
+        
         //text and calling 
         if(!user.getIsCallEnabled() && !user.getIsTextEnabled())return;
         
@@ -111,6 +113,7 @@ public class TwitterListener extends UserEventListener  implements StatusListene
         if (shouldCall)text = text.replaceFirst(CALL_TRIGGER,"");
         boolean shouldText = text.indexOf(TEXT_TRIGGER) > -1 && user.getIsTextEnabled();
         if (shouldText)text = text.replaceFirst(TEXT_TRIGGER,"");
+        
         
         if(!shouldCall && !shouldText)return;// no texting no calling
         
@@ -124,7 +127,9 @@ public class TwitterListener extends UserEventListener  implements StatusListene
             }
         }
         text = m.replaceAll("");//removing valid phone numbers from tweet
-        
+
+        System.out.println(phones.toString());
+
         //itirating and making phone call or text to each phone in the tweet
         Iterator<String> iterator = phones.iterator();
         while(iterator.hasNext()){
@@ -141,9 +146,9 @@ public class TwitterListener extends UserEventListener  implements StatusListene
     private void makeCall(String phoneNumber,long id,long userid){
         //creating endpoint for twillio which will be 
         //twillio server called when phone is picked up
-        String endPoint = "calltag.heroku.com/twillio.htm";
-               endPoint+= "?tweet_id="+id;
-               endPoint+= "&author_id="+userid;
+        String endPoint = "http://calltag.heroku.com/twillio.htm"
+                        + "?tweet_id="+String.valueOf(id)
+                        + "&author_id="+String.valueOf(userid);
                
         phone.call(phoneNumber,endPoint);
     }

@@ -5,6 +5,7 @@
 package com.calltag.controller;
 
 import com.calltag.model.User;
+import com.calltag.service.TwitterListener;
 import static com.calltag.service.TwitterListener.TEXT_TRIGGER;
 import com.calltag.service.UserService;
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
+import twitter4j.conf.Configuration;
 
 /**
  *
@@ -38,6 +40,8 @@ public class MainController {
     private UserService service;
     @Autowired
     Twitter mainTwitter;
+    @Autowired 
+    Configuration twitterConf;
     
    
     @RequestMapping(value = "/index.htm", method = RequestMethod.GET)
@@ -151,7 +155,7 @@ public class MainController {
     
     
     
-    @RequestMapping(value = "/twillo.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/twillio.htm", method = RequestMethod.GET)
     public String twillo(HttpServletRequest req,HttpServletResponse res) {
         String tweetid   = req.getParameter("tweet_id");
         String authorid  = req.getParameter("author_id");
@@ -159,6 +163,8 @@ public class MainController {
         if(tweetid != null && authorid != null){
             Status status = null;
             try {
+                AccessToken token = new AccessToken(twitterConf.getOAuthAccessToken(),twitterConf.getOAuthAccessTokenSecret());
+                mainTwitter.setOAuthAccessToken(token);
                 status = mainTwitter.showStatus(Long.parseLong(tweetid));
             } catch (TwitterException ex) {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -167,12 +173,12 @@ public class MainController {
             if(status!=null){
                 String text = status.getText();
                 //escaping phone numbers and call,text trigger keywords
-                text = text.replaceFirst(TEXT_TRIGGER, "").replace(TEXT_TRIGGER, "");
+                text = text.replaceFirst(TwitterListener.CALL_TRIGGER, "").replaceFirst(TwitterListener.TEXT_TRIGGER, "");
                 text = Pattern.compile("(\\+\\d{12})").matcher(text).replaceAll("");
-                req.setAttribute("text", res);
+                req.setAttribute("text", text);
             }
            
         }       
-        return "twillo";
+        return "twillio";
     }
 }

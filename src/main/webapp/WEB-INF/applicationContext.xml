@@ -53,10 +53,6 @@
           class="twitter4j.TwitterStreamFactory">
         <constructor-arg type="twitter4j.conf.Configuration" ref="twitterConf"/>
     </bean>
-    
-    
-    
-    
     <bean name="mainTwitter"
           class="twitter4j.Twitter"
           factory-bean="twitterFactory"

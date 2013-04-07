@@ -35,7 +35,7 @@
             
         <div class="row">
             <div class="span12 pagination-centered">
-                <a href="<%=request.getAttribute("twitter_url")%>" class="btn btn-large btn-primary" >Sign in With Twitter</a>
+                <a href="<%=request.getAttribute("twitter_url")%>" class="btn btn-large btn-primary button-glow" ><b>Sign in</b> With Twitter</a>
             </div>
         </div> 
     </div>
