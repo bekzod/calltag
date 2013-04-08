@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tweet Call</title>    
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="../../resources/css/main.css" rel="stylesheet" />
-    <link href="../../resources/css/bootstrapSwitch.css" rel="stylesheet" />
+    <link href="resources/css/main.css" rel="stylesheet" />
+    <link href="http://tweetcall.s3-eu-west-1.amazonaws.com/css/bootstrapSwitch.css" rel="stylesheet" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-    <script src="../../resources/js/bootstrapSwitch.js"></script>
+    <script src="http://tweetcall.s3-eu-west-1.amazonaws.com/js/bootstrapSwitch.js"></script>
 
 </head>
 <body>

@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row">
                 <div class="span12 pagination-centered">
-                        <img src="resources/images/logo1.png"/>                    
+                        <img src="http://tweetcall.s3-eu-west-1.amazonaws.com/images/logo1.png"/>
                 </div>
             </div>
         </div>
