@@ -119,7 +119,7 @@ public class TwitterListener extends UserEventListener  implements StatusListene
         
         //extracting unique valid phone numbers in the tweet which will recieve call or text
         Set<String> phones = new HashSet<String>();
-        Matcher m = Pattern.compile("(\\+\\d{12})").matcher(text);
+        Matcher m = Pattern.compile("(\\+44\\d{10})").matcher(text);
         while (m.find()) {
             String phone = m.group();
             if (!phones.contains(phone)) {

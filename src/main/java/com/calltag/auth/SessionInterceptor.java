@@ -1,7 +1,3 @@
- /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.calltag.auth;
 
 /**
@@ -17,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  
-/**
- *
- * @author bek
- */
+
 public class SessionInterceptor extends HandlerInterceptorAdapter{
     @Autowired 
     private UserService userService;
