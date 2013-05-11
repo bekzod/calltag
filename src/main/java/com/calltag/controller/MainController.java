@@ -77,37 +77,37 @@ public class MainController {
         
         RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
         
-        if(requestToken == null||oauthToken==null||oauthVerifier==null) return "redirect:/index.htm?error=&oauthToken="+oauthToken+"  oauthVerifier= "+oauthVerifier + "requestToken"+requestToken;//couldn't retrieve requestToken go to index
+        return "redirect:/index.htm?error=&oauthToken="+oauthToken+"  oauthVerifier= "+oauthVerifier + "requestToken"+requestToken;//couldn't retrieve requestToken go to index
 
-        twitter4j.User twitterUser = null;
-        AccessToken accessToken    = null;
-        try {
-           mainTwitter.setOAuthAccessToken(null);
-           accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
-           mainTwitter.setOAuthAccessToken(accessToken);
-           twitterUser = mainTwitter.showUser(accessToken.getUserId());
-        } catch (TwitterException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if(accessToken==null||twitterUser==null)return "redirect:/index.htm?error=2";//failed return to index
-        
-        long userId = accessToken.getUserId();            
-        User user   = service.getUserById(userId);
-        
-        if(user == null){ //user does not exist create new user
-            user = new User();
-            user.setId(userId);
-            user.setProfilePictureUrl(twitterUser.getBiggerProfileImageURL());
-            user.setName(twitterUser.getName());
-            user.setAccessToken(accessToken.getToken());
-            user.setAccessTokenSecret(accessToken.getTokenSecret());
-            user.setTwitterAccountName(accessToken.getScreenName());
-            service.addUser(user);
-        }
-        
-        req.setAttribute("user",user);//attaching user to request
-        return "redirect:/main.htm";
+//        twitter4j.User twitterUser = null;
+//        AccessToken accessToken    = null;
+//        try {
+//           mainTwitter.setOAuthAccessToken(null);
+//           accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
+//           mainTwitter.setOAuthAccessToken(accessToken);
+//           twitterUser = mainTwitter.showUser(accessToken.getUserId());
+//        } catch (TwitterException ex) {
+//            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        if(accessToken==null||twitterUser==null)return "redirect:/index.htm?error=2";//failed return to index
+//        
+//        long userId = accessToken.getUserId();            
+//        User user   = service.getUserById(userId);
+//        
+//        if(user == null){ //user does not exist create new user
+//            user = new User();
+//            user.setId(userId);
+//            user.setProfilePictureUrl(twitterUser.getBiggerProfileImageURL());
+//            user.setName(twitterUser.getName());
+//            user.setAccessToken(accessToken.getToken());
+//            user.setAccessTokenSecret(accessToken.getTokenSecret());
+//            user.setTwitterAccountName(accessToken.getScreenName());
+//            service.addUser(user);
+//        }
+//        
+//        req.setAttribute("user",user);//attaching user to request
+//        return "redirect:/main.htm";
     }
         
     
