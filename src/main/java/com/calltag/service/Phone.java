@@ -25,13 +25,15 @@ public class Phone {
     private TwilioRestClient client;
     private Account account;
     private String fromNumber;
-        
+    
     public Phone(String sid,String auth,String from){
       client     = new TwilioRestClient(sid,auth);      
       account    = client.getAccount();
       fromNumber = from;
     }
     
+    
+    // number and callback url which will be called when user picks up the phone
     public void call(String number,String url){
         CallFactory callFactory = account.getCallFactory();
         Map<String, String> callParams = new HashMap<String, String>();
@@ -45,6 +47,8 @@ public class Phone {
         }
     }
     
+    
+    // number and text of message
     public void text(String number,String text){
         SmsFactory smsFactory = account.getSmsFactory();
         Map<String, String> smsParams = new HashMap<String, String>();

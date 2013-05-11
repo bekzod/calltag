@@ -131,6 +131,7 @@ public class TwitterListener extends UserEventListener  implements StatusListene
             if(shouldCall){
                makeCall(phoneNumber,status.getId(),status.getUser().getId());
             }else if(shouldText){
+               text += " sent by "+status.getUser().getName();
                makeText(phoneNumber,text);
             }
         }

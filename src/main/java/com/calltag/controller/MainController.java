@@ -32,7 +32,7 @@ public class MainController {
     @Autowired
     private UserService service;
     @Autowired
-    Twitter mainTwitter;
+    Twitter mainTwitter; //twitter api wrapper provided by twitter4j
     @Autowired 
     Configuration twitterConf;
     
@@ -55,6 +55,7 @@ public class MainController {
                 
         if(requestToken != null){
             authUrl = requestToken.getAuthenticationURL();
+            //storing request token in cookie
             req.getSession().setAttribute(REQUEST_TOKEN,requestToken);
         }
                
@@ -116,6 +117,8 @@ public class MainController {
     @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
     public String logout(HttpServletRequest req,HttpServletResponse res) {
         User user = (User)req.getAttribute("user");
+        
+        //desroying  session
         if(user !=null){
             req.setAttribute("user",null);
             user.setSessionId(null);
@@ -127,13 +130,13 @@ public class MainController {
     }
     
     
-    //
+    //main page of the app
     @RequestMapping(value = "/main.htm", method = {RequestMethod.GET, RequestMethod.POST })
     public String main(HttpServletRequest req,HttpServletResponse res){
         User user = (User) req.getAttribute("user");
         if(user==null) return "redirect:/index.htm";
         
-        //user can enable disable texting and calling feature
+        //user can enable disable texting and calling features
         if(req.getMethod().equals("POST")){
             String isCallEnabled = req.getParameter("is_call_enabled");
             String isTextEnabled = req.getParameter("is_text_enabled");
@@ -159,10 +162,11 @@ public class MainController {
         
         if(tweetid != null && authorid != null){
             Status status = null;
+         
             try {
                 AccessToken token = new AccessToken(twitterConf.getOAuthAccessToken(),twitterConf.getOAuthAccessTokenSecret());
                 mainTwitter.setOAuthAccessToken(token);
-                status = mainTwitter.showStatus(Long.parseLong(tweetid));
+                status = mainTwitter.showStatus(Long.parseLong(tweetid));// getting the tweet
             } catch (TwitterException ex) {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -173,6 +177,7 @@ public class MainController {
                 text = text.replaceFirst(TwitterListener.CALL_TRIGGER, "").replaceFirst(TwitterListener.TEXT_TRIGGER, "");
                 text = Pattern.compile("(\\+\\d{12})").matcher(text).replaceAll("");
                 req.setAttribute("text", text);
+                req.setAttribute("author", status.getUser().getName());
             }
            
         }       
