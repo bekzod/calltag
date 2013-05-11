@@ -83,7 +83,6 @@ public class MainController {
         try {
             
            accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
-           mainTwitter.setOAuthAccessToken(accessToken);
            twitterUser = mainTwitter.showUser(accessToken.getUserId());
 
         } catch (TwitterException ex) {
