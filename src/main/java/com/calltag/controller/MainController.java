@@ -82,7 +82,8 @@ public class MainController {
         twitter4j.User twitterUser = null;
         AccessToken accessToken    = null;
         try {
-           mainTwitter.setOAuthAccessToken(null);
+           AccessToken token = new AccessToken(twitterConf.getOAuthAccessToken(), twitterConf.getOAuthAccessTokenSecret());
+           mainTwitter.setOAuthAccessToken(token);
            accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
            mainTwitter.setOAuthAccessToken(accessToken);
            twitterUser = mainTwitter.showUser(accessToken.getUserId());
