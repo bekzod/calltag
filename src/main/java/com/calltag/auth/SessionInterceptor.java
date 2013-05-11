@@ -21,10 +21,13 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
     @Override
     public boolean preHandle(HttpServletRequest req,HttpServletResponse res, Object handler){
         HttpSession session = req.getSession();
+        
         if(!session.isNew()){
            User user = userService.getUserBySession(session.getId());
-           long expiry = session.getCreationTime() + session.getMaxInactiveInterval();
-           if(user!=null){
+           long expiryDate = session.getCreationTime() + session.getMaxInactiveInterval()*1000;
+           
+           // checking if expiry dates match with one in database
+           if(user !=null && user.getSessionExpiryDate()==expiryDate){
               req.setAttribute("user", user);
            }
         }
@@ -41,12 +44,17 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
                 ModelAndView modelAndView){
 
         User user = (User) req.getAttribute("user");
-        HttpSession session = req.getSession(true);
         if(user!=null){
-            session.setMaxInactiveInterval(24*60*60);//one day interval
-//            long expiry = session.getCreationTime()+ session.getMaxInactiveInterval();
-//            user.setSessionExpiryDate();
+            //getting session object, if does not exist then it is created
+            HttpSession session = req.getSession(true);
+            
+            int timeout     = 24*60*60;//one day interval in seconds 
+            long expiryDate = session.getCreationTime() + timeout*1000; // expiry date in milliseconds
+            
+            session.setMaxInactiveInterval(timeout);
+
             user.setSessionId(session.getId());
+            user.setSessionExpiryDate(expiryDate); //storing expiry date as well in database
             userService.updateUser(user);
         }
         

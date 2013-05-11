@@ -69,7 +69,8 @@ public class MainController {
     @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
     public String login(HttpServletRequest req,HttpServletResponse res) {
         if(req.getAttribute("user") != null) return "redirect:/main.htm";//already loged go to main
-
+        
+        //retrieving oath tokens returned from twitter which are used to create accesstoken
         String oauthToken    = req.getParameter("oauth_token");
         String oauthVerifier = req.getParameter("oauth_verifier");
         
@@ -104,7 +105,7 @@ public class MainController {
         }
         
         req.setAttribute("user",user);//attaching user to request
-        return main(req,res);
+        return "redirect:/main.htm";
     }
         
     
@@ -144,7 +145,7 @@ public class MainController {
             user.setIsTextEnabled(isTextEnabled.equals("1"));
         }
 
-        //user updated in post handler so need to update here
+        //user updated in post handler so need to update user in database
         return "main";
     }
     
