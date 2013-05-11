@@ -76,7 +76,7 @@ public class MainController {
         
         RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
         
-        if(requestToken == null||oauthToken==null||oauthVerifier==null) return "redirect:/index.htm?error=1";//couldn't retrieve requestToken go to index
+        if(requestToken == null||oauthToken==null||oauthVerifier==null) return "redirect:/index.htm?error=1"+requestToken+oauthToken+oauthVerifier;//couldn't retrieve requestToken go to index
 
         twitter4j.User twitterUser = null;
         AccessToken accessToken    = null;
