@@ -81,7 +81,9 @@ public class MainController {
         twitter4j.User twitterUser = null;
         AccessToken accessToken    = null;
         try {
+           mainTwitter.setOAuthAccessToken(null);
            accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
+           mainTwitter.setOAuthAccessToken(accessToken);
            twitterUser = mainTwitter.showUser(accessToken.getUserId());
         } catch (TwitterException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
