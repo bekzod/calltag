@@ -77,13 +77,12 @@ public class MainController {
         
         RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
         
-        if(requestToken == null||oauthToken==null||oauthVerifier==null) return "redirect:/index.htm?error=1";//couldn't retrieve requestToken go to index
+        if(requestToken == null||oauthToken==null||oauthVerifier==null) return "redirect:/index.htm?error=&oauthToken="+oauthToken+"  oauthVerifier= "+oauthVerifier + "requestToken"+requestToken;//couldn't retrieve requestToken go to index
 
         twitter4j.User twitterUser = null;
         AccessToken accessToken    = null;
         try {
-           AccessToken token = new AccessToken(twitterConf.getOAuthAccessToken(), twitterConf.getOAuthAccessTokenSecret());
-           mainTwitter.setOAuthAccessToken(token);
+           mainTwitter.setOAuthAccessToken(null);
            accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
            mainTwitter.setOAuthAccessToken(accessToken);
            twitterUser = mainTwitter.showUser(accessToken.getUserId());
