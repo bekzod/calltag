@@ -43,7 +43,7 @@ public class MainController {
     public String index(HttpServletRequest req,HttpServletResponse res) {
         if(req.getAttribute("user") != null) return main(req,res);//already loged go to main
 
-        //constructing twitter sign in url
+        //constructing twitter signin url
         RequestToken requestToken = null;
         String authUrl = "#";
         try {
@@ -87,12 +87,12 @@ public class MainController {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if(accessToken==null||twitterUser==null)return "redirect:/index.htm?error=1";//failed return to index
+        if(accessToken==null||twitterUser==null)return "redirect:/index.htm?error=2";//failed return to index
         
         long userId = accessToken.getUserId();            
         User user   = service.getUserById(userId);
         
-        if(user == null){ //user doens't exist create new user
+        if(user == null){ //user does not exist create new user
             user = new User();
             user.setId(userId);
             user.setProfilePictureUrl(twitterUser.getBiggerProfileImageURL());
