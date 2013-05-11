@@ -49,7 +49,9 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
             HttpSession session = req.getSession();
             
             int timeout     = 24*60*60;//one day interval in seconds 
-            long expiryDate = session.getCreationTime() + timeout*1000; // expiry date in milliseconds
+            long expiryDate = session.getCreationTime(); 
+                    
+//                    + timeout*1000; // expiry date in milliseconds
             
             session.setMaxInactiveInterval(timeout);
 
