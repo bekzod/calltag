@@ -2,11 +2,9 @@ package com.calltag.controller;
 
 import com.calltag.model.User;
 import com.calltag.service.TwitterListener;
-import static com.calltag.service.TwitterListener.TEXT_TRIGGER;
 import com.calltag.service.UserService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -40,23 +37,26 @@ public class MainController {
     Configuration twitterConf;
     
    
+    
+    //Index Page
     @RequestMapping(value = "/index.htm", method = RequestMethod.GET)
     public String index(HttpServletRequest req,HttpServletResponse res) {
         if(req.getAttribute("user") != null) return main(req,res);//already loged go to main
 
+        //constructing twitter sign in url
         RequestToken requestToken = null;
+        String authUrl = "#";
         try {
             mainTwitter.setOAuthAccessToken(null);
             requestToken = mainTwitter.getOAuthRequestToken();
         } catch (TwitterException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        String authUrl = "/index.htm";
         if(requestToken != null){
             authUrl = requestToken.getAuthenticationURL();
             req.getSession().setAttribute(REQUEST_TOKEN,requestToken);
         }
+        
         
         req.setAttribute("twitter_url",authUrl);
         return "index";
@@ -74,6 +74,7 @@ public class MainController {
         String oauthVerifier = req.getParameter("oauth_verifier");
         
         RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
+        
         if(requestToken == null||oauthToken==null||oauthVerifier==null) return "redirect:/index.htm?error=1";//couldn't retrieve requestToken go to index
 
         twitter4j.User twitterUser = null;
@@ -91,7 +92,7 @@ public class MainController {
         long userId = accessToken.getUserId();            
         User user   = service.getUserById(userId);
         
-        if(user == null){ //use doens't exist create new user
+        if(user == null){ //user doens't exist create new user
             user = new User();
             user.setId(userId);
             user.setProfilePictureUrl(twitterUser.getBiggerProfileImageURL());
@@ -102,14 +103,14 @@ public class MainController {
             service.addUser(user);
         }
         
-        req.setAttribute("user",user);//saving user for session save
+        req.setAttribute("user",user);//attaching user to request
         return main(req,res);
     }
         
     
     
     
-    //called by twitter when user attempts to login
+    //clears cookies redirects user to main page
     @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
     public String logout(HttpServletRequest req,HttpServletResponse res) {
         User user = (User)req.getAttribute("user");
@@ -150,7 +151,7 @@ public class MainController {
     
     
     
-    
+    // path for twillio callback, twillio calles the url when user picks up the phone
     @RequestMapping(value = "/twillio.htm", method = RequestMethod.GET)
     public String twillo(HttpServletRequest req,HttpServletResponse res) {
         String tweetid   = req.getParameter("tweet_id");
