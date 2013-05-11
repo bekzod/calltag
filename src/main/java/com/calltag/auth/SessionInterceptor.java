@@ -20,7 +20,8 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 
     @Override
     public boolean preHandle(HttpServletRequest req,HttpServletResponse res, Object handler){
-        HttpSession session = req.getSession();
+        //getting session object, if does not exist then it is created
+        HttpSession session = req.getSession(true);
         
         if(!session.isNew()){
            User user = userService.getUserBySession(session.getId());
@@ -35,7 +36,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
         return true;
     }
     
-    
+        
     @Override
     public void postHandle(
                 HttpServletRequest req,
@@ -45,8 +46,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 
         User user = (User) req.getAttribute("user");
         if(user!=null){
-            //getting session object, if does not exist then it is created
-            HttpSession session = req.getSession(true);
+            HttpSession session = req.getSession();
             
             int timeout     = 24*60*60;//one day interval in seconds 
             long expiryDate = session.getCreationTime() + timeout*1000; // expiry date in milliseconds

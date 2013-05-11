@@ -52,12 +52,12 @@ public class MainController {
         } catch (TwitterException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
         if(requestToken != null){
             authUrl = requestToken.getAuthenticationURL();
             req.getSession().setAttribute(REQUEST_TOKEN,requestToken);
         }
-        
-        
+               
         req.setAttribute("twitter_url",authUrl);
         return "index";
     }
@@ -125,10 +125,8 @@ public class MainController {
         return "redirect:/index.htm";
     }
     
-       
     
-    
-    
+    //
     @RequestMapping(value = "/main.htm", method = {RequestMethod.GET, RequestMethod.POST })
     public String main(HttpServletRequest req,HttpServletResponse res){
         User user = (User) req.getAttribute("user");

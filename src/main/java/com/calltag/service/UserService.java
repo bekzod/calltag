@@ -10,8 +10,6 @@ import com.calltag.model.User;
 import com.calltag.model.UserDao;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 
 /**
  *
