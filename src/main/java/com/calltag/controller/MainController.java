@@ -19,10 +19,6 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 
-/**
- *
- * @author bek
- */
 
 @Controller
 public class MainController {
@@ -43,7 +39,7 @@ public class MainController {
     public String index(HttpServletRequest req,HttpServletResponse res) {
         if(req.getAttribute("user") != null) return main(req,res);//already loged go to main
 
-        //constructing twitter signin url
+        //constructing twitter signIn url
         RequestToken requestToken = null;
         String authUrl = "#";
         try {
@@ -55,7 +51,7 @@ public class MainController {
                 
         if(requestToken != null){
             authUrl = requestToken.getAuthenticationURL();
-            //storing request token in cookie
+            //storing request token in cookie which is required for later stage of twitter authentication
             req.getSession().setAttribute(REQUEST_TOKEN,requestToken);
         }
                
@@ -75,6 +71,7 @@ public class MainController {
         String oauthToken    = req.getParameter("oauth_token");
         String oauthVerifier = req.getParameter("oauth_verifier");
         
+        //retrieving request token from cookie (request token is used to construct twitter oath kyes)
         RequestToken requestToken = (RequestToken)req.getSession().getAttribute(REQUEST_TOKEN);
         
         if(requestToken == null||oauthToken==null||oauthVerifier==null) return "redirect:/index.htm?error=1";//couldn't retrieve requestToken go to index
@@ -82,10 +79,10 @@ public class MainController {
         twitter4j.User twitterUser = null;
         AccessToken accessToken    = null;
         try {
-           mainTwitter.setOAuthAccessToken(null);
-           accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);
-           mainTwitter.setOAuthAccessToken(accessToken);
-           twitterUser = mainTwitter.showUser(accessToken.getUserId());
+           mainTwitter.setOAuthAccessToken(null); // clearing oath tokens
+           accessToken = mainTwitter.getOAuthAccessToken(requestToken, oauthVerifier);// creating new oath token for the user
+           mainTwitter.setOAuthAccessToken(accessToken); // setting new access token
+           twitterUser = mainTwitter.showUser(accessToken.getUserId());// retrieving user information from twitter
         } catch (TwitterException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -93,7 +90,7 @@ public class MainController {
         if(accessToken==null||twitterUser==null)return "redirect:/index.htm?error=2";//failed return to index
         
         long userId = accessToken.getUserId();            
-        User user   = service.getUserById(userId);
+        User user   = service.getUserById(userId);// retrieving user from database
         
         if(user == null){ //user does not exist create new user
             user = new User();
@@ -136,7 +133,7 @@ public class MainController {
         User user = (User) req.getAttribute("user");
         if(user==null) return "redirect:/index.htm";
         
-        //user can enable disable texting and calling features
+        //user can enable disable texting and calling features by sending POST request to main.htm
         if(req.getMethod().equals("POST")){
             String isCallEnabled = req.getParameter("is_call_enabled");
             String isTextEnabled = req.getParameter("is_text_enabled");
@@ -164,6 +161,7 @@ public class MainController {
             Status status = null;
          
             try {
+                //constructing default app token which is used for retriving particular tweet
                 AccessToken token = new AccessToken(twitterConf.getOAuthAccessToken(),twitterConf.getOAuthAccessTokenSecret());
                 mainTwitter.setOAuthAccessToken(token);
                 status = mainTwitter.showStatus(Long.parseLong(tweetid));// getting the tweet

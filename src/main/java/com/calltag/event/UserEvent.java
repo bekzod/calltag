@@ -3,10 +3,9 @@ package com.calltag.event;
 import com.calltag.model.User;
 import org.springframework.context.ApplicationEvent;
 
-/**
- *
- * @author bek
- */
+
+
+
 public class UserEvent extends ApplicationEvent {
    
     public static final String USER_ADDED   = "user_added";

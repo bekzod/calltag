@@ -97,7 +97,6 @@ public class TwitterListener extends UserEventListener  implements StatusListene
     
     private void handleTweet(User user,Status status){
         
-        
         //is text and calling enabled in user's settings
         if(!user.getIsCallEnabled() && !user.getIsTextEnabled())return;
         
@@ -139,7 +138,7 @@ public class TwitterListener extends UserEventListener  implements StatusListene
     
     
     private void makeCall(String phoneNumber,long id,long userid){
-        //creating endpoint for twillio which will be called when phone is picked up
+        //creating callback url for twillio which will be called when phone is picked up
         String endPoint = "http://calltag.heroku.com/twillio.htm"
                         + "?tweet_id="+String.valueOf(id)
                         + "&author_id="+String.valueOf(userid);

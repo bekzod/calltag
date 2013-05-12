@@ -10,11 +10,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-/*
-**
- *
- * @author bek
- */
+
+
 
 @Repository
 @Transactional(readOnly = true)
@@ -53,7 +50,6 @@ public class UserDao {
     
     
     public User getUserBySession(String sessionId) {
-//        long now = System.currentTimeMillis()/1000;
         List<User> list = (List<User>)getCurrentSession()
                           .createQuery("from User where session_id=?")// checking if session expired
                           .setParameter(0, sessionId)

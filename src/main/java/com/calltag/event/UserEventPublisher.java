@@ -7,10 +7,8 @@ package com.calltag.event;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 
-/**
- *
- * @author bek
- */
+
+
 public class UserEventPublisher implements ApplicationEventPublisherAware {
     private ApplicationEventPublisher publisher;
     

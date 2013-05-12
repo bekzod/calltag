@@ -32,12 +32,16 @@ public class Phone {
       fromNumber = from;
     }
     
-    
-    // number and callback url which will be called when user picks up the phone
-    public void call(String number,String url){
+    /**
+     * Initiates a call to particular phone number using twillio api
+     * 
+     * @param phoneNumber any valid number 
+     * @param url callback url which will be called when user picks up the phone
+     */
+    public void call(String phoneNumber,String url){
         CallFactory callFactory = account.getCallFactory();
         Map<String, String> callParams = new HashMap<String, String>();
-        callParams.put("To", number);
+        callParams.put("To", phoneNumber);
         callParams.put("From", fromNumber); 
         callParams.put("Url", url);
         try {
@@ -47,12 +51,15 @@ public class Phone {
         }
     }
     
-    
-    // number and text of message
-    public void text(String number,String text){
+    /**
+     * Initiates a text to particular phone number using twillio api
+     * @param phoneNumber any valid number
+     * @param text text which needs to be sent as text message
+     */
+    public void text(String phoneNumber,String text){
         SmsFactory smsFactory = account.getSmsFactory();
         Map<String, String> smsParams = new HashMap<String, String>();
-        smsParams.put("To", number); 
+        smsParams.put("To", phoneNumber); 
         smsParams.put("From", fromNumber);
         smsParams.put("Body", text);
         try {

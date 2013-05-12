@@ -3,10 +3,8 @@ package com.calltag.event;
 import com.calltag.model.User;
 import org.springframework.context.ApplicationListener;
 
-/**
- *
- * @author bek
- */
+
+
 public class UserEventListener implements ApplicationListener<UserEvent>{
 
    public void onApplicationEvent(UserEvent event) {
