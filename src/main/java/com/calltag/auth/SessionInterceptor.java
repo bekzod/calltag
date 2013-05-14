@@ -1,9 +1,5 @@
 package com.calltag.auth;
 
-/**
- *
- * @author bek
- */
 import com.calltag.model.User;
 import com.calltag.service.UserService;
 import javax.servlet.http.HttpServletRequest;

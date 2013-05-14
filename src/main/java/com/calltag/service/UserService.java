@@ -11,10 +11,7 @@ import com.calltag.model.UserDao;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- *
- * @author bek
- */
+
 public class UserService extends UserEventPublisher{
    @Autowired
    private UserDao userDao;
