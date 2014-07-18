@@ -6,14 +6,6 @@ Simple Web App that utilizes Twitter and Twillio Api.
 App allows to make phone calls and send text message through tweet, by tweeting with hashtag **#call** or **#text** with the target phone numbers.
 
 
-### Members Group 20 
-
-* Bekhzod Khaitbaev
-* Alexandros Vrakas
-* Rachael Daminabo
-
-
-
 ### Requirement
 Requires twitter4j.properties file in src/main/resources/twitter4j.properties containing 
 
